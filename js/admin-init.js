@@ -1,7 +1,7 @@
 /* ===========================
    SCHOOLHUB PRO - ADMIN INIT
    مدارس الجيل الجديد الخاصة
-   الإصدار: 2.2 (متوافق مع auto-seeder v3.2)
+   الإصدار: 2.3 (متوافق بالكامل مع النظام المُهيّأ)
    =========================== */
 
 /**
@@ -10,6 +10,7 @@
  * 
  * تم إصلاحه: #13 - منع تسريب الذاكرة من تكرار تحميل السكريبتات
  * تم إصلاحه: #14 - تحديث استيراد startSetupWizard
+ * تم إصلاحه: #15 - استخدام checkSystemStatus بدلاً من startSetupWizard
  */
 
 import { authManager } from './auth-system.js';
@@ -24,8 +25,7 @@ import { adminExpenses } from './admin-expenses.js';
 import { adminGallery } from './admin-gallery.js';
 import { adminSettings } from './admin-settings.js';
 import { adminLogs } from './admin-logs.js';
-// [FIX] استخدام الأسماء الصحيحة من auto-seeder v3.2
-import { startSetupWizard, checkSystemStatus } from './auto-seeder.js';
+import { checkSystemStatus } from './auto-seeder.js';
 import { fetchDocument } from './firebase-config.js';
 import { 
   showToast, showConfirm, showAlert, showSuccess, showError,
@@ -37,9 +37,9 @@ import { cacheManager, CACHE_CONFIG, clearAllCache } from './cache-manager.js';
 // ===========================
 // إدارة السكريبتات المحملة (منع التسريب)
 // ===========================
-const loadedScripts = new Map(); // مفتاح: نص السكريبت, قيمة: عنصر السكريبت
-const loadedModules = new Set(); // أسماء الوحدات المحملة
-const SCRIPT_MARKER = 'data-dynamic-page'; // وسم لتحديد السكريبتات المضافة ديناميكياً
+const loadedScripts = new Map();
+const loadedModules = new Set();
+const SCRIPT_MARKER = 'data-dynamic-page';
 
 const contentArea = document.getElementById('contentArea');
 const pageTitle = document.getElementById('pageTitle');
@@ -65,8 +65,10 @@ async function initAdminDashboard() {
     
     currentAdmin = session.user;
     updateAdminUI(currentAdmin);
-    // [FIX] استخدام startSetupWizard للتحقق من التهيئة
-    await startSetupWizard(false);
+    
+    // [FIX #15] التحقق من حالة النظام فقط — بدون محاولة إعادة التهيئة
+    await checkSystemStatus();
+    
     await loadDashboardStats();
     setupNavigation();
     setupButtons();
@@ -147,9 +149,6 @@ function closeSidebar() {
   if (sidebarOverlay) sidebarOverlay.classList.remove('open');
 }
 
-/**
- * إزالة السكريبتات القديمة المرتبطة بالصفحة السابقة
- */
 function cleanupPageScripts() {
   const dynamicScripts = document.querySelectorAll(`script[${SCRIPT_MARKER}]`);
   dynamicScripts.forEach(script => {
@@ -160,7 +159,6 @@ function cleanupPageScripts() {
 }
 
 function navigateTo(page) {
-  // إذا كانت نفس الصفحة الحالية، لا تفعل شيئاً
   if (page === currentPage) return;
   
   currentPage = page;
@@ -199,7 +197,6 @@ function navigateTo(page) {
   
   if (pageTitle) pageTitle.textContent = titles[page] || page;
   
-  // تنظيف السكريبتات القديمة قبل تحميل الجديدة
   cleanupPageScripts();
   
   if (page === 'dashboard') {
@@ -233,12 +230,10 @@ async function loadPageContent(url) {
     if (pageContent) {
       contentArea.innerHTML = pageContent.outerHTML;
       
-      // معالجة السكريبتات مع منع التكرار
       const scripts = doc.querySelectorAll('script[type="module"]');
       scripts.forEach(oldScript => {
         const scriptKey = oldScript.textContent || oldScript.src;
         
-        // تخطي إذا كان السكريبت محملاً مسبقاً
         if (scriptKey && loadedScripts.has(scriptKey)) {
           console.log('⏭️ تخطي سكريبت محمل مسبقاً');
           return;
@@ -250,7 +245,6 @@ async function loadPageContent(url) {
         newScript.setAttribute(SCRIPT_MARKER, 'true');
         document.body.appendChild(newScript);
         
-        // تخزين مرجع للسكريبت
         if (scriptKey) {
           loadedScripts.set(scriptKey, newScript);
         }
@@ -505,7 +499,7 @@ window.AdminDashboard = {
 
 document.addEventListener('DOMContentLoaded', initAdminDashboard);
 
-console.log('📦 Admin Init: جاهز | الإصدار 2.2');
+console.log('📦 Admin Init: جاهز | الإصدار 2.3 (مستقر)');
 console.log('🔧 منع تسريب الذاكرة: تتبع السكريبتات المحملة');
-console.log('🔄 [FIX] مُحدَّث لاستخدام startSetupWizard');
+console.log('🔄 [FIX] استخدام checkSystemStatus للتحقق فقط');
 console.log('ℹ️ جميع وحدات الإدارة متاحة عبر window.AdminDashboard');
