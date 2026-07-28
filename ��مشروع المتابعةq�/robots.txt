@@ -1,0 +1,55 @@
+# ===========================
+# SCHOOLHUB PRO - ROBOTS.TXT
+# مدارس الجيل الجديد الخاصة
+# الإصدار: 2.0
+# ===========================
+
+# السماح لجميع محركات البحث
+User-agent: *
+
+# منع فهرسة صفحات الإدارة بالكامل
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /js/admin-students.js
+Disallow: /js/admin-announcements.js
+Disallow: /js/admin-messages.js
+
+# منع فهرسة صفحات الطلاب الخاصة (تظهر بعد تسجيل الدخول)
+Disallow: /student-dashboard.html
+Disallow: /student-schedule.html
+Disallow: /student-announcements.html
+Disallow: /student-messages.html
+Disallow: /student-attendance.html
+Disallow: /student-expenses.html
+Disallow: /student-events.html
+Disallow: /student-gallery.html
+
+# منع فهرسة الملفات التقنية
+Disallow: /js/
+Disallow: /css/
+Disallow: /workers/
+
+# منع فهرسة ملفات النظام
+Disallow: /sw.js
+Disallow: /manifest.json
+Disallow: /offline.html
+
+# السماح بفهرسة الصفحة الرئيسية فقط (صفحة تسجيل الدخول)
+Allow: /index.html
+Allow: /elgeel.png
+
+# منع فهرسة أي ملفات حساسة
+Disallow: /*.env
+Disallow: /*.config
+Disallow: /*.log
+
+# تحديد خريطة الموقع (سيتم إنشاؤها مستقبلاً)
+# Sitemap: https://example.com/sitemap.xml
+
+# تأخير الزحف (بالثواني) - احترام موارد الخادم
+Crawl-delay: 10
+
+# منع فهرسة المسارات التي تحتوي على معلمات
+Disallow: /*?
+Disallow: /*.json$
+Disallow: /*.xml$

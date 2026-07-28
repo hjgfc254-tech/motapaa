@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>المصروفات | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+    }
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      display: flex;
+      font-family: var(--font-body);
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-deep);
+      color: var(--white);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+    
+    .sidebar-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .sidebar-school-name small {
+      display: block;
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      opacity: 0.6;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.35);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-numbers);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-lg);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: right;
+      font-family: var(--font-body);
+    }
+    
+    .nav-item i {
+      width: 22px;
+      text-align: center;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(30, 95, 187, 0.4);
+    }
+    
+    .nav-item.danger:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    
+    .admin-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .admin-details .name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-details .role {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .main-wrapper {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      min-height: 100vh;
+    }
+    
+    .topbar {
+      background: var(--white);
+      height: var(--topbar-height);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-2xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: var(--space-sm);
+    }
+    
+    .page-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    
+    .topbar-btn:hover {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      display: none;
+    }
+    
+    .sidebar-overlay.open {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .main-wrapper {
+        margin-right: 0;
+      }
+    }
+
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-2xl);
+      color: var(--navy-deep);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      border: none;
+      font-family: var(--font-body);
+    }
+    
+    .btn-primary {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: var(--shadow-btn-blue);
+    }
+    
+    .btn-primary:hover {
+      background: var(--royal-hover);
+      transform: translateY(-2px);
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: var(--white);
+    }
+    
+    .btn-success:hover {
+      background: var(--success-hover);
+    }
+    
+    .btn-outline {
+      background: var(--white);
+      border: 2px solid var(--border);
+      color: var(--body);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .btn-sm {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--text-xs);
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .card-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--ink);
+    }
+    
+    .card-body {
+      padding: var(--space-xl);
+    }
+    
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .form-group label {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .form-input, .form-select {
+      width: 100%;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--soft);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--ink);
+      transition: all var(--transition-base);
+    }
+    
+    .form-input:focus, .form-select:focus {
+      border-color: var(--border-focus);
+      background: var(--white);
+      box-shadow: var(--shadow-input-focus);
+      outline: none;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    
+    table th {
+      background: var(--soft);
+      padding: var(--space-md);
+      text-align: right;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    
+    table td {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--border-light);
+      font-size: var(--text-sm);
+      color: var(--ink);
+    }
+    
+    table tr:hover td {
+      background: var(--royal-light);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+    }
+    
+    .badge-paid { background: var(--success-bg); color: var(--success); }
+    .badge-partial { background: var(--warning-bg); color: var(--warning); }
+    .badge-unpaid { background: var(--red-light); color: var(--red); }
+    
+    .amount {
+      font-family: var(--font-numbers);
+      font-weight: var(--weight-bold);
+    }
+    
+    .amount.required { color: var(--ink); }
+    .amount.paid { color: var(--success); }
+    .amount.remaining { color: var(--red); }
+    
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .summary-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      text-align: center;
+      border: 1px solid var(--border-light);
+    }
+    
+    .summary-card .value {
+      font-family: var(--font-numbers);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-2xl);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .summary-card .label {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 38, 71, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      animation: fadeIn 0.2s ease;
+    }
+    
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      width: 100%;
+      max-width: 450px;
+      box-shadow: var(--shadow-3xl);
+      animation: slideUp 0.3s ease;
+    }
+    
+    .modal-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    .modal-body {
+      padding: var(--space-xl);
+    }
+    
+    .modal-footer {
+      padding: var(--space-lg) var(--space-xl);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: var(--space-md);
+      justify-content: flex-end;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl);
+      color: var(--mute);
+    }
+    
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 600px) {
+      .page-container { padding: var(--space-md); }
+      .page-header h1 { font-size: var(--text-xl); }
+      .form-row { grid-template-columns: 1fr; }
+      .summary-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('open');"></div>
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="elgeel.png" alt="الشعار" class="sidebar-logo" onerror="this.style.display='none'">
+      <div class="sidebar-school-name">
+        مدارس الجيل الجديد
+        <small>الخاصة</small>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">الرئيسية</div>
+      <a class="nav-item" href="admin-dashboard.html">
+        <i class="fas fa-grid-2"></i> لوحة التحكم
+      </a>
+      
+      <div class="nav-section-title">الإدارة</div>
+      <a class="nav-item" href="admin-students.html">
+        <i class="fas fa-user-graduate"></i> الطلاب
+      </a>
+      <a class="nav-item" href="admin-stages.html">
+        <i class="fas fa-layer-group"></i> المراحل والفصول
+      </a>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-user-shield"></i> المشرفين
+      </a>
+      
+      <div class="nav-section-title">التواصل</div>
+      <a class="nav-item" href="admin-announcements.html">
+        <i class="fas fa-bullhorn"></i> الإعلانات
+      </a>
+      <a class="nav-item" href="admin-messages.html">
+        <i class="fas fa-message"></i> الرسائل
+      </a>
+      
+      <div class="nav-section-title">المحتوى</div>
+      <a class="nav-item" href="admin-events.html">
+        <i class="fas fa-calendar-star"></i> الأحداث
+      </a>
+      <a class="nav-item" href="admin-gallery.html">
+        <i class="fas fa-images"></i> معرض الصور
+      </a>
+      <a class="nav-item" href="admin-schedules.html">
+        <i class="fas fa-calendar-week"></i> جداول الحصص
+      </a>
+      
+      <div class="nav-section-title">المالية</div>
+      <a class="nav-item active" href="admin-expenses.html">
+        <i class="fas fa-receipt"></i> المصروفات
+      </a>
+      <a class="nav-item" href="admin-attendance.html">
+        <i class="fas fa-clipboard-check"></i> الحضور والغياب
+      </a>
+      
+      <div class="nav-section-title">النظام</div>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-gear"></i> الإعدادات
+      </a>
+      <a class="nav-item" href="admin-logs.html">
+        <i class="fas fa-clock-rotate-left"></i> سجل العمليات
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">م</div>
+        <div class="admin-details">
+          <div class="name" id="adminName">المشرف</div>
+          <div class="role" id="adminRole">مدير عام</div>
+        </div>
+      </div>
+      <button class="nav-item danger" onclick="window.location.href='admin-login.html'" style="width:100%;">
+        <i class="fas fa-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+  
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">المصروفات</h1>
+      </div>
+      <div class="topbar-right">
+        <a href="admin-dashboard.html" class="topbar-btn" title="الرئيسية">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </header>
+    
+    <div style="padding:var(--space-2xl);max-width:1200px;" id="contentArea">
+      <div class="page-container">
+        <div class="page-header">
+          <h1>💰 المصروفات</h1>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3>اختر الفصل</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label>المرحلة</label>
+                <select class="form-select" id="stageSelect">
+                  <option value="">اختر المرحلة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>الفصل</label>
+                <select class="form-select" id="classSelect">
+                  <option value="">اختر الفصل أولاً</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btnLoadExpenses">
+              <i class="fas fa-search"></i> عرض المصروفات
+            </button>
+          </div>
+        </div>
+        
+        <div id="summaryContainer"></div>
+        <div id="expensesContainer"></div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { adminExpenses } from './js/admin-expenses.js';
+    import { adminStages } from './js/admin-stages.js';
+    import { showToast, formatCurrency, formatNumberArabic, escapeHtml } from './js/utils.js';
+    
+    // دوال تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    const escapeAttr = (str) => {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#039;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+    
+    const stageSelect = document.getElementById('stageSelect');
+    const classSelect = document.getElementById('classSelect');
+    const btnLoadExpenses = document.getElementById('btnLoadExpenses');
+    const summaryContainer = document.getElementById('summaryContainer');
+    const expensesContainer = document.getElementById('expensesContainer');
+    
+    async function init() {
+      try {
+        const stages = await adminStages.getStages();
+        stageSelect.innerHTML = '<option value="">اختر المرحلة</option>' + 
+          stages.map(s => `<option value="${escapeAttr(s.id)}">${safeEscapeHtml(s.name)}</option>`).join('');
+      } catch (e) {
+        showToast('فشل تحميل المراحل', 'error');
+      }
+      
+      stageSelect.addEventListener('change', async () => {
+        classSelect.innerHTML = '<option value="">اختر الفصل</option>';
+        if (!stageSelect.value) return;
+        
+        try {
+          const classes = await adminStages.getClasses(stageSelect.value);
+          classSelect.innerHTML = '<option value="">اختر الفصل</option>' + 
+            classes.map(c => `<option value="${escapeAttr(c.id)}">${safeEscapeHtml(c.name)}</option>`).join('');
+        } catch (e) {
+          showToast('فشل تحميل الفصول', 'error');
+        }
+      });
+      
+      btnLoadExpenses.addEventListener('click', loadExpenses);
+    }
+    
+    async function loadExpenses() {
+      const classId = classSelect.value;
+      if (!classId) return showToast('اختر الفصل', 'warning');
+      
+      btnLoadExpenses.disabled = true;
+      btnLoadExpenses.innerHTML = '<span class="spinner spinner-sm"></span> جاري التحميل...';
+      
+      try {
+        const expensesList = await adminExpenses.getClassExpenses(classId);
+        const summary = await adminExpenses.getExpenseSummary(classId);
+        
+        if (expensesList.length === 0) {
+          expensesContainer.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="empty-state">
+                  <i class="fas fa-user-graduate"></i>
+                  <p>لا يوجد طلاب في هذا الفصل.</p>
+                </div>
+              </div>
+            </div>
+          `;
+          summaryContainer.innerHTML = '';
+          return;
+        }
+        
+        summaryContainer.innerHTML = `
+          <div class="summary-cards">
+            <div class="summary-card">
+              <div class="value" style="color:var(--ink);">${formatNumberArabic(summary.totalStudents)}</div>
+              <div class="label">عدد الطلاب</div>
+            </div>
+            <div class="summary-card">
+              <div class="value" style="color:var(--ink);">${formatCurrency(summary.totalRequired)}</div>
+              <div class="label">إجمالي المطلوب</div>
+            </div>
+            <div class="summary-card">
+              <div class="value" style="color:var(--success);">${formatCurrency(summary.totalPaid)}</div>
+              <div class="label">إجمالي المدفوع</div>
+            </div>
+            <div class="summary-card">
+              <div class="value" style="color:var(--red);">${formatCurrency(summary.totalRemaining)}</div>
+              <div class="label">إجمالي المتبقي</div>
+            </div>
+            <div class="summary-card">
+              <div class="value" style="color:var(--royal);">${summary.collectionRate}%</div>
+              <div class="label">نسبة التحصيل</div>
+            </div>
+          </div>
+        `;
+        
+        expensesContainer.innerHTML = `
+          <div class="card">
+            <div class="card-header">
+              <h3>📋 قائمة المصروفات</h3>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-outline btn-sm" id="btnSetAll">
+                  <i class="fas fa-edit"></i> تعيين مصروفات للجميع
+                </button>
+              </div>
+            </div>
+            <div class="card-body" style="overflow-x:auto;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>الكود</th>
+                    <th>الاسم</th>
+                    <th>المطلوب</th>
+                    <th>المدفوع</th>
+                    <th>المتبقي</th>
+                    <th>الحالة</th>
+                    <th>إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${expensesList.map(e => {
+                    const remaining = e.remainingAmount || 0;
+                    let statusBadge = 'badge-unpaid';
+                    let statusText = 'غير مدفوع';
+                    
+                    if (remaining <= 0 && e.requiredAmount > 0) {
+                      statusBadge = 'badge-paid';
+                      statusText = 'مدفوع';
+                    } else if (e.paidAmount > 0) {
+                      statusBadge = 'badge-partial';
+                      statusText = 'جزئي';
+                    }
+                    
+                    // تعقيم جميع البيانات القادمة من Firestore
+                    const safeCode = safeEscapeHtml(e.studentCode || '—');
+                    const safeName = safeEscapeHtml(e.studentName || '—');
+                    const safeAttrName = escapeAttr(e.studentName || '—');
+                    const safeAttrId = escapeAttr(e.studentId || '');
+                    const safeRequired = e.requiredAmount || 0;
+                    
+                    return `
+                      <tr>
+                        <td style="font-family:var(--font-numbers);">${safeCode}</td>
+                        <td><strong>${safeName}</strong></td>
+                        <td><span class="amount required">${formatCurrency(e.requiredAmount)}</span></td>
+                        <td><span class="amount paid">${formatCurrency(e.paidAmount)}</span></td>
+                        <td><span class="amount remaining">${formatCurrency(remaining)}</span></td>
+                        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                        <td>
+                          <div style="display:flex;gap:4px;">
+                            <button class="btn btn-outline btn-sm btnSetExpense" data-id="${safeAttrId}" data-name="${safeAttrName}" data-required="${safeRequired}">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-success btn-sm btnAddPayment" data-id="${safeAttrId}" data-name="${safeAttrName}">
+                              <i class="fas fa-plus"></i> دفعة
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        attachEvents(classId);
+        
+      } catch (error) {
+        expensesContainer.innerHTML = `<div class="card"><div class="card-body"><p style="color:var(--red);text-align:center;">فشل تحميل المصروفات</p></div></div>`;
+      } finally {
+        btnLoadExpenses.disabled = false;
+        btnLoadExpenses.innerHTML = '<i class="fas fa-search"></i> عرض المصروفات';
+      }
+    }
+    
+    function attachEvents(classId) {
+      document.querySelectorAll('.btnSetExpense').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showSetExpenseModal(btn.dataset.id, btn.dataset.name, parseFloat(btn.dataset.required) || 0);
+        });
+      });
+      
+      document.querySelectorAll('.btnAddPayment').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showPaymentModal(btn.dataset.id, btn.dataset.name);
+        });
+      });
+      
+      const btnSetAll = document.getElementById('btnSetAll');
+      if (btnSetAll) {
+        btnSetAll.addEventListener('click', () => {
+          showBulkExpenseModal(classId);
+        });
+      }
+    }
+    
+    function showSetExpenseModal(studentId, studentName, currentAmount) {
+      const safeStudentName = safeEscapeHtml(studentName || 'الطالب');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>تعيين مصروفات - ${safeStudentName}</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="expenseForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>المبلغ المطلوب (ج.م)</label>
+                <input type="number" class="form-input" id="expenseAmount" value="${currentAmount}" min="0" step="0.01" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-primary">حفظ</button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#expenseForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = parseFloat(overlay.querySelector('#expenseAmount').value);
+        if (isNaN(amount) || amount < 0) return showToast('المبلغ غير صحيح', 'warning');
+        
+        try {
+          await adminExpenses.setStudentExpense(studentId, { required_amount: amount });
+          closeModal();
+          loadExpenses();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    function showPaymentModal(studentId, studentName) {
+      const safeStudentName = safeEscapeHtml(studentName || 'الطالب');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>تسجيل دفعة - ${safeStudentName}</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="paymentForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>المبلغ المدفوع (ج.م)</label>
+                <input type="number" class="form-input" id="paymentAmount" min="1" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label>طريقة الدفع</label>
+                <select class="form-select" id="paymentMethod">
+                  <option value="نقدي">نقدي</option>
+                  <option value="تحويل بنكي">تحويل بنكي</option>
+                  <option value="فودافون كاش">فودافون كاش</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-success">تسجيل الدفعة</button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#paymentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = parseFloat(overlay.querySelector('#paymentAmount').value);
+        const method = overlay.querySelector('#paymentMethod').value;
+        
+        if (isNaN(amount) || amount <= 0) return showToast('المبلغ غير صحيح', 'warning');
+        
+        try {
+          await adminExpenses.recordPayment(studentId, amount, method);
+          closeModal();
+          loadExpenses();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    function showBulkExpenseModal(classId) {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>تعيين مصروفات للفصل كاملاً</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="bulkExpenseForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>المبلغ المطلوب لكل طالب (ج.م)</label>
+                <input type="number" class="form-input" id="bulkAmount" min="0" step="0.01" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-primary">تطبيق على الكل</button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#bulkExpenseForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = parseFloat(overlay.querySelector('#bulkAmount').value);
+        if (isNaN(amount) || amount < 0) return showToast('المبلغ غير صحيح', 'warning');
+        
+        try {
+          const list = await adminExpenses.getClassExpenses(classId);
+          const expensesData = list.map(item => ({
+            studentId: item.studentId,
+            required_amount: amount
+          }));
+          
+          await adminExpenses.setBulkExpenses(expensesData);
+          closeModal();
+          loadExpenses();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    init();
+  </script>
+</body>
+</html>

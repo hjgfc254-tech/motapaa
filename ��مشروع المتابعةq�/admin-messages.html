@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>الرسائل | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+    }
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      display: flex;
+      font-family: var(--font-body);
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-deep);
+      color: var(--white);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+    
+    .sidebar-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .sidebar-school-name small {
+      display: block;
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      opacity: 0.6;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.35);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-numbers);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-lg);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: right;
+      font-family: var(--font-body);
+    }
+    
+    .nav-item i {
+      width: 22px;
+      text-align: center;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(30, 95, 187, 0.4);
+    }
+    
+    .nav-item.danger:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    
+    .admin-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .admin-details .name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-details .role {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .main-wrapper {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      min-height: 100vh;
+    }
+    
+    .topbar {
+      background: var(--white);
+      height: var(--topbar-height);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-2xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: var(--space-sm);
+    }
+    
+    .page-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    
+    .topbar-btn:hover {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      display: none;
+    }
+    
+    .sidebar-overlay.open {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .main-wrapper {
+        margin-right: 0;
+      }
+    }
+
+    .page-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-2xl);
+      color: var(--navy-deep);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      border: none;
+      font-family: var(--font-body);
+    }
+    
+    .btn-primary {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: var(--shadow-btn-blue);
+    }
+    
+    .btn-primary:hover {
+      background: var(--royal-hover);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background: var(--white);
+      border: 2px solid var(--border);
+      color: var(--body);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .btn-danger {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .btn-danger:hover {
+      background: var(--red-hover);
+    }
+    
+    .btn-sm {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--text-xs);
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin-bottom: var(--space-lg);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+    
+    .card-body {
+      padding: var(--space-xl);
+    }
+    
+    .card-footer {
+      padding: var(--space-md) var(--space-xl);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      white-space: nowrap;
+    }
+    
+    .badge-unread {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .badge-read {
+      background: var(--soft);
+      color: var(--mute);
+    }
+    
+    .badge-replied {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+    
+    .badge-sent {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+    
+    .message-body {
+      font-size: var(--text-sm);
+      color: var(--body);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .reply-box {
+      background: var(--soft);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      border-right: 3px solid var(--success);
+    }
+    
+    .reply-label {
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      color: var(--success);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-xs);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--body);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .filter-tab:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .filter-tab.active {
+      background: var(--royal);
+      color: var(--white);
+      border-color: var(--royal);
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 38, 71, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      animation: fadeIn 0.2s ease;
+    }
+    
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      width: 100%;
+      max-width: 550px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-3xl);
+      animation: slideUp 0.3s ease;
+    }
+    
+    .modal-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    .modal-body {
+      padding: var(--space-xl);
+    }
+    
+    .modal-footer {
+      padding: var(--space-lg) var(--space-xl);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: var(--space-md);
+      justify-content: flex-end;
+    }
+    
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .form-group label {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--soft);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--ink);
+      transition: all var(--transition-base);
+    }
+    
+    .form-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--border-focus);
+      background: var(--white);
+      box-shadow: var(--shadow-input-focus);
+      outline: none;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl);
+      color: var(--mute);
+    }
+    
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 600px) {
+      .page-container { padding: var(--space-md); }
+      .page-header h1 { font-size: var(--text-xl); }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('open');"></div>
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="elgeel.png" alt="الشعار" class="sidebar-logo" onerror="this.style.display='none'">
+      <div class="sidebar-school-name">
+        مدارس الجيل الجديد
+        <small>الخاصة</small>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">الرئيسية</div>
+      <a class="nav-item" href="admin-dashboard.html">
+        <i class="fas fa-grid-2"></i> لوحة التحكم
+      </a>
+      
+      <div class="nav-section-title">الإدارة</div>
+      <a class="nav-item" href="admin-students.html">
+        <i class="fas fa-user-graduate"></i> الطلاب
+      </a>
+      <a class="nav-item" href="admin-stages.html">
+        <i class="fas fa-layer-group"></i> المراحل والفصول
+      </a>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-user-shield"></i> المشرفين
+      </a>
+      
+      <div class="nav-section-title">التواصل</div>
+      <a class="nav-item" href="admin-announcements.html">
+        <i class="fas fa-bullhorn"></i> الإعلانات
+      </a>
+      <a class="nav-item active" href="admin-messages.html">
+        <i class="fas fa-message"></i> الرسائل
+      </a>
+      
+      <div class="nav-section-title">المحتوى</div>
+      <a class="nav-item" href="admin-events.html">
+        <i class="fas fa-calendar-star"></i> الأحداث
+      </a>
+      <a class="nav-item" href="admin-gallery.html">
+        <i class="fas fa-images"></i> معرض الصور
+      </a>
+      <a class="nav-item" href="admin-schedules.html">
+        <i class="fas fa-calendar-week"></i> جداول الحصص
+      </a>
+      
+      <div class="nav-section-title">المالية</div>
+      <a class="nav-item" href="admin-expenses.html">
+        <i class="fas fa-receipt"></i> المصروفات
+      </a>
+      <a class="nav-item" href="admin-attendance.html">
+        <i class="fas fa-clipboard-check"></i> الحضور والغياب
+      </a>
+      
+      <div class="nav-section-title">النظام</div>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-gear"></i> الإعدادات
+      </a>
+      <a class="nav-item" href="admin-logs.html">
+        <i class="fas fa-clock-rotate-left"></i> سجل العمليات
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">م</div>
+        <div class="admin-details">
+          <div class="name" id="adminName">المشرف</div>
+          <div class="role" id="adminRole">مدير عام</div>
+        </div>
+      </div>
+      <button class="nav-item danger" onclick="window.location.href='admin-login.html'" style="width:100%;">
+        <i class="fas fa-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+  
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">الرسائل</h1>
+      </div>
+      <div class="topbar-right">
+        <a href="admin-dashboard.html" class="topbar-btn" title="الرئيسية">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </header>
+    
+    <div style="padding:var(--space-2xl);flex:1;" id="contentArea">
+        <div class="page-header">
+          <h1>💬 الرسائل</h1>
+          <button class="btn btn-primary" id="btnNewMessage">
+            <i class="fas fa-paper-plane"></i> إرسال رسالة
+          </button>
+        </div>
+        
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">الكل</button>
+          <button class="filter-tab" data-filter="incoming">الوارد</button>
+          <button class="filter-tab" data-filter="sent">المرسل</button>
+          <button class="filter-tab" data-filter="unread">غير مقروء</button>
+          <button class="filter-tab" data-filter="replied">تم الرد</button>
+        </div>
+        
+        <div id="messagesContainer"></div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { adminMessages } from './js/admin-messages.js';
+    import { adminStudents } from './js/admin-students.js';
+    import { showToast, showConfirm, timeAgoArabic, formatDateArabic, escapeHtml } from './js/utils.js';
+    
+    const messagesContainer = document.getElementById('messagesContainer');
+    const btnNewMessage = document.getElementById('btnNewMessage');
+    const filterTabs = document.getElementById('filterTabs');
+    
+    async function init() {
+      filterTabs.addEventListener('click', (e) => {
+        const tab = e.target.closest('.filter-tab');
+        if (!tab) return;
+        filterTabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        const filter = tab.dataset.filter;
+        adminMessages.currentFilters.type = filter === 'incoming' ? 'incoming' : filter === 'sent' ? 'sent' : 'all';
+        adminMessages.currentFilters.status = filter === 'unread' ? 'unread' : filter === 'replied' ? 'replied' : 'all';
+        adminMessages.resetFilters();
+        loadMessages();
+      });
+      
+      loadMessages();
+    }
+    
+    async function loadMessages() {
+      try {
+        const result = await adminMessages.getMessages();
+        const messages = result.messages || [];
+        
+        if (messages.length === 0) {
+          messagesContainer.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="empty-state">
+                  <i class="fas fa-message"></i>
+                  <p>لا توجد رسائل.</p>
+                </div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        messagesContainer.innerHTML = messages.map(msg => {
+          const isIncoming = msg.type === 'student_to_school';
+          const isUnread = isIncoming && !msg.read;
+          const isReplied = !!msg.reply;
+          const isSent = msg.type === 'school_to_student';
+          
+          let cardStyle = '';
+          let badgeHTML = '';
+          
+          if (isUnread) {
+            cardStyle = 'border-right:4px solid var(--royal);';
+            badgeHTML = '<span class="badge badge-unread"><i class="fas fa-circle"></i> جديدة</span>';
+          } else if (isReplied) {
+            cardStyle = 'border-right:4px solid var(--success);';
+            badgeHTML = '<span class="badge badge-replied"><i class="fas fa-check-circle"></i> تم الرد</span>';
+          } else if (isSent) {
+            cardStyle = 'border-right:4px solid var(--warning);';
+            badgeHTML = '<span class="badge badge-sent"><i class="fas fa-paper-plane"></i> مرسلة</span>';
+          } else {
+            badgeHTML = '<span class="badge badge-read"><i class="fas fa-check"></i> مقروءة</span>';
+          }
+          
+          const createdAt = msg.createdAt?.toDate ? msg.createdAt.toDate() : new Date(msg.createdAt);
+          
+          // تطهير النصوص من XSS
+          const safeSubject = escapeHtml(msg.subject || 'رسالة');
+          const safeBody = escapeHtml(msg.body || '');
+          const safeReply = escapeHtml(msg.reply || '');
+          
+          return `
+            <div class="card" style="${cardStyle}">
+              <div class="card-header">
+                <div style="flex:1;">
+                  <h3 style="font-family:var(--font-heading);font-weight:var(--weight-bold);font-size:var(--text-md);color:var(--ink);margin-bottom:4px;">
+                    ${safeSubject}
+                  </h3>
+                  <span style="font-size:var(--text-xs);color:var(--body-light);">
+                    ${isIncoming ? 'من: ' + escapeHtml(msg.from_name || msg.from_code || 'طالب') : 'إلى: ' + escapeHtml(msg.to_name || 'طالب')}
+                  </span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  ${badgeHTML}
+                  ${isIncoming && !isReplied ? `
+                    <button class="btn btn-outline btn-sm btnReply" data-id="${msg.id}" data-student="${escapeHtml(msg.from_name || '')}">
+                      <i class="fas fa-reply"></i> رد
+                    </button>
+                  ` : ''}
+                  <button class="btn btn-danger btn-sm btnDelete" data-id="${msg.id}" data-subject="${safeSubject}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="message-body">${safeBody}</div>
+                ${msg.reply ? `
+                  <div class="reply-box">
+                    <div class="reply-label"><i class="fas fa-reply"></i> رد الإدارة</div>
+                    ${safeReply}
+                  </div>
+                ` : ''}
+              </div>
+              <div class="card-footer">
+                <span style="font-size:var(--text-xs);color:var(--mute);">
+                  <i class="fas fa-clock"></i> ${timeAgoArabic(createdAt)} · ${formatDateArabic(createdAt)}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        attachEvents();
+        
+      } catch (error) {
+        messagesContainer.innerHTML = `<div class="card"><div class="card-body"><p style="color:var(--red);text-align:center;">فشل تحميل الرسائل</p></div></div>`;
+      }
+    }
+    
+    function attachEvents() {
+      document.querySelectorAll('.btnReply').forEach(btn => {
+        btn.addEventListener('click', () => showReplyModal(btn.dataset.id));
+      });
+      
+      document.querySelectorAll('.btnDelete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const confirmed = await showConfirm(`حذف رسالة "${btn.dataset.subject}"؟`, 'تأكيد');
+          if (confirmed) {
+            await adminMessages.deleteMessage(btn.dataset.id);
+            loadMessages();
+          }
+        });
+      });
+    }
+    
+    function showReplyModal(messageId) {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>رد على الرسالة</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="replyForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>نص الرد</label>
+                <textarea class="form-textarea" id="replyBody" required placeholder="اكتب ردك هنا..."></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> إرسال الرد
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#replyForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const replyBody = overlay.querySelector('#replyBody').value.trim();
+        if (!replyBody) return showToast('نص الرد مطلوب', 'warning');
+        
+        try {
+          await adminMessages.replyToMessage(messageId, replyBody);
+          closeModal();
+          loadMessages();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    function showNewMessageModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>إرسال رسالة جديدة</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="newMessageForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>كود الطالب</label>
+                <input type="text" class="form-input" id="msgStudentCode" placeholder="أدخل كود الطالب" required>
+              </div>
+              <div class="form-group">
+                <label>الموضوع</label>
+                <input type="text" class="form-input" id="msgSubject" placeholder="موضوع الرسالة" required>
+              </div>
+              <div class="form-group">
+                <label>نص الرسالة</label>
+                <textarea class="form-textarea" id="msgBody" placeholder="اكتب رسالتك هنا..." required></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> إرسال
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#newMessageForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const code = overlay.querySelector('#msgStudentCode').value.trim();
+        const subject = overlay.querySelector('#msgSubject').value.trim();
+        const body = overlay.querySelector('#msgBody').value.trim();
+        
+        if (!code) return showToast('كود الطالب مطلوب', 'warning');
+        if (!subject) return showToast('الموضوع مطلوب', 'warning');
+        if (!body) return showToast('نص الرسالة مطلوب', 'warning');
+        
+        try {
+          const result = await adminStudents.getStudents({ filters: { search: code } });
+          const student = result.students?.find(s => s.code === code);
+          if (!student) return showToast('الطالب غير موجود', 'error');
+          
+          await adminMessages.sendMessage({
+            to: student.id,
+            to_name: student.name,
+            subject,
+            body
+          });
+          
+          closeModal();
+          loadMessages();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    btnNewMessage.addEventListener('click', showNewMessageModal);
+    
+    init();
+  </script>
+</body>
+</html>

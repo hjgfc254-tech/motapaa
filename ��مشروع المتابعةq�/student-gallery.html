@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="معرض الصور - مدارس الجيل الجديد الخاصة">
+  <meta name="theme-color" content="#0A2647">
+  <title>معرض الصور | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+    }
+    
+    .top-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-light);
+      padding: var(--space-md) var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .top-bar-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--royal);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+    }
+    
+    .back-btn:hover { color: var(--navy); }
+    
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .page-header i {
+      color: var(--royal);
+      font-size: var(--text-xl);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .main-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    /* شبكة الألبومات */
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-lg);
+    }
+    
+    /* بطاقة ألبوم */
+    .album-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+    
+    .album-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+    
+    .album-cover {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: var(--soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mute-light);
+      font-size: 48px;
+      position: relative;
+    }
+    
+    .album-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      padding: var(--space-lg) var(--space-md) var(--space-md);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+    }
+    
+    .album-body {
+      padding: var(--space-lg);
+    }
+    
+    .album-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .album-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--text-xs);
+      color: var(--body-light);
+    }
+    
+    .album-date {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .album-count {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      background: var(--soft);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-sm);
+    }
+    
+    /* عارض الصور */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      animation: fadeIn 0.25s ease;
+    }
+    
+    .lightbox-header {
+      padding: var(--space-lg) var(--space-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    
+    .lightbox-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+    }
+    
+    .lightbox-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: var(--text-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    
+    .lightbox-close:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    
+    .lightbox-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      position: relative;
+    }
+    
+    .lightbox-image {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: var(--text-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    
+    .lightbox-nav:hover { background: rgba(255,255,255,0.35); }
+    .lightbox-nav.prev { right: var(--space-lg); }
+    .lightbox-nav.next { left: var(--space-lg); }
+    
+    .lightbox-counter {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      padding: var(--space-md);
+      font-size: var(--text-sm);
+      font-family: var(--font-numbers);
+    }
+    
+    .lightbox-footer {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl) var(--space-xl);
+      overflow-x: auto;
+    }
+    
+    .lightbox-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all var(--transition-fast);
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+    
+    .lightbox-thumb:hover { opacity: 0.8; }
+    .lightbox-thumb.active {
+      border-color: white;
+      opacity: 1;
+    }
+    
+    /* حالات التحميل */
+    .loading-state {
+      text-align: center;
+      padding: var(--space-5xl);
+    }
+    
+    .loading-state .spinner {
+      margin: 0 auto var(--space-lg);
+      width: 40px;
+      height: 40px;
+      border-width: 4px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-5xl);
+    }
+    
+    .empty-state i {
+      font-size: 56px;
+      color: var(--mute-light);
+      margin-bottom: var(--space-lg);
+      display: block;
+    }
+    
+    .empty-state h3 {
+      font-family: var(--font-heading);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .empty-state p {
+      color: var(--body-light);
+      font-size: var(--text-sm);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @media (max-width: 600px) {
+      .top-bar { padding: var(--space-sm) var(--space-md); }
+      .main-content { padding: var(--space-md); }
+      .albums-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+      .album-cover { height: 180px; }
+      .lightbox-nav { width: 36px; height: 36px; font-size: var(--text-sm); }
+      .lightbox-nav.prev { right: var(--space-sm); }
+      .lightbox-nav.next { left: var(--space-sm); }
+      .lightbox-thumb { width: 44px; height: 44px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="student-dashboard.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i>
+        العودة للوحة المتابعة
+      </a>
+      <div class="page-header">
+        <h1>معرض الصور</h1>
+        <i class="fas fa-images"></i>
+      </div>
+    </div>
+  </header>
+  
+  <main class="main-content">
+    <div id="loadingState" class="loading-state">
+      <div class="spinner"></div>
+      <p>جاري تحميل الألبومات...</p>
+    </div>
+    
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <i class="fas fa-images"></i>
+      <h3>لا توجد ألبومات</h3>
+      <p>لم يتم إضافة أي ألبومات بعد.</p>
+    </div>
+    
+    <div class="albums-grid" id="albumsGrid" style="display:none;"></div>
+  </main>
+  
+  <script type="module">
+    import { authManager } from './js/auth-system.js';
+    import { fetchDocuments } from './js/firebase-config.js';
+    import { getCachedData, CACHE_CONFIG } from './js/cache-manager.js';
+    import { formatDateArabic, formatFileSize, escapeHtml } from './js/utils.js';
+    
+    // دوال تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    const escapeAttr = (str) => {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#039;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+    
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    const albumsGrid = document.getElementById('albumsGrid');
+    
+    let currentStudent = null;
+    let currentLightbox = null;
+    
+    // ===========================
+    // التهيئة
+    // ===========================
+    async function initPage() {
+      try {
+        const session = await authManager.initialize();
+        
+        if (!session.isAuthenticated || session.type !== 'student') {
+          window.location.href = 'index.html';
+          return;
+        }
+        
+        currentStudent = session.user;
+        await loadAlbums();
+        
+      } catch (error) {
+        console.error('❌ فشل تحميل الصفحة:', error);
+        showEmptyState('حدث خطأ في تحميل الألبومات.');
+      }
+    }
+    
+    // ===========================
+    // تحميل الألبومات
+    // ===========================
+    async function loadAlbums() {
+      try {
+        loadingState.style.display = 'block';
+        albumsGrid.style.display = 'none';
+        emptyState.style.display = 'none';
+        
+        const result = await fetchDocuments('albums', {
+          orderByField: 'createdAt',
+          orderDirection: 'desc',
+          limitCount: 20
+        });
+        
+        const albums = result.documents || [];
+        
+        if (albums.length === 0) {
+          showEmptyState();
+          return;
+        }
+        
+        renderAlbums(albums);
+        
+        loadingState.style.display = 'none';
+        albumsGrid.style.display = 'grid';
+        
+      } catch (error) {
+        console.error('❌ فشل تحميل الألبومات:', error);
+        showEmptyState('فشل تحميل الألبومات.');
+      }
+    }
+    
+    // ===========================
+    // عرض الألبومات (مع تعقيم كامل)
+    // ===========================
+    function renderAlbums(albums) {
+      albumsGrid.innerHTML = albums.map(album => {
+        const coverUrl = album.cover_image || null;
+        const imageCount = album.image_count || 0;
+        const createdAt = album.createdAt?.toDate ? album.createdAt.toDate() : new Date(album.createdAt);
+        
+        // تعقيم جميع البيانات القادمة من Firestore
+        const safeTitle = safeEscapeHtml(album.title || 'ألبوم');
+        const safeAttrTitle = escapeAttr(album.title || 'ألبوم');
+        const safeAttrId = escapeAttr(album.id || '');
+        const safeCoverUrl = escapeAttr(coverUrl || '');
+        const safeDescription = safeEscapeHtml(album.description || '');
+        const safeDate = safeEscapeHtml(formatDateArabic(createdAt));
+        
+        return `
+          <div class="album-card" data-album-id="${safeAttrId}" data-album-title="${safeAttrTitle}">
+            ${safeCoverUrl ? 
+              `<img src="${safeCoverUrl}" alt="${safeAttrTitle}" class="album-cover" onerror="this.parentElement.querySelector('.album-placeholder').style.display='flex'; this.style.display='none';">
+               <div class="album-placeholder" style="display:none;width:100%;height:200px;background:var(--soft);align-items:center;justify-content:center;color:var(--mute-light);font-size:48px;"><i class="fas fa-images"></i></div>` :
+              `<div class="album-cover"><i class="fas fa-images"></i></div>`
+            }
+            <div class="album-overlay">
+              <i class="fas fa-camera"></i>
+              <span>${imageCount} صورة</span>
+            </div>
+            <div class="album-body">
+              <h3 class="album-title">${safeTitle}</h3>
+              <div class="album-meta">
+                <span class="album-date">
+                  <i class="fas fa-clock"></i> ${safeDate}
+                </span>
+                <span class="album-count">
+                  <i class="fas fa-image"></i> ${imageCount}
+                </span>
+              </div>
+              ${safeDescription ? `<p style="font-size:var(--text-xs);color:var(--body-light);margin-top:var(--space-sm);">${safeDescription}</p>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // إضافة حدث النقر على الألبومات
+      albumsGrid.querySelectorAll('.album-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const albumId = card.dataset.albumId;
+          const albumTitle = card.dataset.albumTitle;
+          openLightbox(albumId, albumTitle);
+        });
+      });
+    }
+    
+    // ===========================
+    // فتح عارض الصور
+    // ===========================
+    async function openLightbox(albumId, albumTitle) {
+      try {
+        // جلب صور الألبوم
+        const result = await fetchDocuments(`albums/${albumId}/images`, {
+          orderByField: 'order',
+          orderDirection: 'asc',
+          limitCount: 50
+        });
+        
+        const images = result.documents || [];
+        
+        if (images.length === 0) {
+          return;
+        }
+        
+        createLightbox(albumTitle, images);
+        
+      } catch (error) {
+        console.error('❌ فشل فتح الألبوم:', error);
+      }
+    }
+    
+    // ===========================
+    // إنشاء عارض الصور (مع تعقيم)
+    // ===========================
+    function createLightbox(title, images) {
+      // إزالة العارض السابق
+      if (currentLightbox) {
+        currentLightbox.remove();
+      }
+      
+      const safeTitle = safeEscapeHtml(title || 'ألبوم');
+      const safeFirstUrl = escapeAttr(images[0]?.url || '');
+      
+      let currentIndex = 0;
+      
+      const lightbox = document.createElement('div');
+      lightbox.className = 'lightbox';
+      lightbox.innerHTML = `
+        <div class="lightbox-header">
+          <h3 class="lightbox-title">${safeTitle}</h3>
+          <button class="lightbox-close"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="lightbox-content">
+          <button class="lightbox-nav prev" id="prevBtn"><i class="fas fa-chevron-right"></i></button>
+          <img src="${safeFirstUrl}" alt="" class="lightbox-image" id="mainImage">
+          <button class="lightbox-nav next" id="nextBtn"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <div class="lightbox-counter" id="imageCounter">1 / ${images.length}</div>
+        <div class="lightbox-footer" id="thumbnails">
+          ${images.map((img, index) => `
+            <img src="${escapeAttr(img.url || '')}" class="lightbox-thumb ${index === 0 ? 'active' : ''}" data-index="${index}">
+          `).join('')}
+        </div>
+      `;
+      
+      document.body.appendChild(lightbox);
+      currentLightbox = lightbox;
+      
+      // منع التمرير في الخلفية
+      document.body.style.overflow = 'hidden';
+      
+      const mainImage = lightbox.querySelector('#mainImage');
+      const counter = lightbox.querySelector('#imageCounter');
+      const thumbnails = lightbox.querySelectorAll('.lightbox-thumb');
+      
+      function updateImage(index) {
+        currentIndex = index;
+        mainImage.src = escapeAttr(images[index]?.url || '');
+        counter.textContent = `${index + 1} / ${images.length}`;
+        
+        thumbnails.forEach(t => t.classList.remove('active'));
+        thumbnails[index].classList.add('active');
+        
+        // تمرير thumbnail المنشطة إلى المنظر
+        thumbnails[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+      
+      // أزرار التنقل
+      lightbox.querySelector('#prevBtn').addEventListener('click', () => {
+        const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+        updateImage(newIndex);
+      });
+      
+      lightbox.querySelector('#nextBtn').addEventListener('click', () => {
+        const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+        updateImage(newIndex);
+      });
+      
+      // النقر على الصور المصغرة
+      thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          updateImage(parseInt(thumb.dataset.index));
+        });
+      });
+      
+      // التنقل بلوحة المفاتيح
+      const keyHandler = (e) => {
+        if (e.key === 'ArrowRight') {
+          const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+          updateImage(newIndex);
+        } else if (e.key === 'ArrowLeft') {
+          const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+          updateImage(newIndex);
+        } else if (e.key === 'Escape') {
+          closeLightbox();
+        }
+      };
+      
+      document.addEventListener('keydown', keyHandler);
+      
+      // إغلاق العارض
+      const closeLightbox = () => {
+        lightbox.remove();
+        currentLightbox = null;
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', keyHandler);
+      };
+      
+      lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+    }
+    
+    // ===========================
+    // عرض حالة فارغة
+    // ===========================
+    function showEmptyState(message = null) {
+      loadingState.style.display = 'none';
+      albumsGrid.style.display = 'none';
+      emptyState.style.display = 'block';
+      if (message) emptyState.querySelector('p').textContent = message;
+    }
+    
+    // ===========================
+    // بدء التهيئة
+    // ===========================
+    initPage();
+  </script>
+</body>
+</html>

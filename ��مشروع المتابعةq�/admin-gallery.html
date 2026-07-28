@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>معرض الصور | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+    }
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      display: flex;
+      font-family: var(--font-body);
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-deep);
+      color: var(--white);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+    
+    .sidebar-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .sidebar-school-name small {
+      display: block;
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      opacity: 0.6;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.35);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-numbers);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-lg);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: right;
+      font-family: var(--font-body);
+    }
+    
+    .nav-item i {
+      width: 22px;
+      text-align: center;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(30, 95, 187, 0.4);
+    }
+    
+    .nav-item.danger:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    
+    .admin-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .admin-details .name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-details .role {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .main-wrapper {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      min-height: 100vh;
+    }
+    
+    .topbar {
+      background: var(--white);
+      height: var(--topbar-height);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-2xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: var(--space-sm);
+    }
+    
+    .page-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    
+    .topbar-btn:hover {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      display: none;
+    }
+    
+    .sidebar-overlay.open {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .main-wrapper {
+        margin-right: 0;
+      }
+    }
+
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-2xl);
+      color: var(--navy-deep);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      border: none;
+      font-family: var(--font-body);
+    }
+    
+    .btn-primary {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: var(--shadow-btn-blue);
+    }
+    
+    .btn-primary:hover {
+      background: var(--royal-hover);
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .btn-danger:hover {
+      background: var(--red-hover);
+    }
+    
+    .btn-outline {
+      background: var(--white);
+      border: 2px solid var(--border);
+      color: var(--body);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .btn-sm {
+      padding: var(--space-xs) var(--space-md);
+      font-size: var(--text-xs);
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin-bottom: var(--space-xl);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .card-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--ink);
+    }
+    
+    .card-body {
+      padding: var(--space-xl);
+    }
+    
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--space-lg);
+    }
+    
+    .album-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      transition: all var(--transition-base);
+      cursor: pointer;
+    }
+    
+    .album-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-3px);
+    }
+    
+    .album-cover {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: var(--soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mute-light);
+      font-size: 48px;
+    }
+    
+    .album-info {
+      padding: var(--space-lg);
+    }
+    
+    .album-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .album-meta {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .album-actions {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+    
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--space-md);
+    }
+    
+    .image-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: all var(--transition-fast);
+    }
+    
+    .image-card:hover {
+      border-color: var(--royal);
+    }
+    
+    .image-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+    
+    .image-card.cover {
+      border-color: var(--warning);
+    }
+    
+    .cover-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--warning);
+      color: white;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: var(--weight-bold);
+    }
+    
+    .image-actions {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.6);
+      padding: var(--space-xs);
+      display: flex;
+      justify-content: center;
+      gap: var(--space-xs);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+    
+    .image-card:hover .image-actions {
+      opacity: 1;
+    }
+    
+    .image-actions .btn {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
+    
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3xl);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      background: var(--soft);
+    }
+    
+    .upload-zone:hover {
+      border-color: var(--royal);
+      background: var(--royal-light);
+    }
+    
+    .upload-zone i {
+      font-size: 48px;
+      color: var(--mute);
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    
+    .upload-zone.dragover {
+      border-color: var(--success);
+      background: var(--success-bg);
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 38, 71, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      animation: fadeIn 0.2s ease;
+    }
+    
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-3xl);
+      animation: slideUp 0.3s ease;
+    }
+    
+    .modal-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-close:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    .modal-body {
+      padding: var(--space-xl);
+    }
+    
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .form-group label {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--soft);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--ink);
+      transition: all var(--transition-base);
+    }
+    
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--border-focus);
+      background: var(--white);
+      box-shadow: var(--shadow-input-focus);
+      outline: none;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      background: var(--soft);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-top: var(--space-md);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: var(--success);
+      transition: width var(--transition-base);
+      width: 0%;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl);
+      color: var(--mute);
+    }
+    
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 600px) {
+      .page-container { padding: var(--space-md); }
+      .page-header h1 { font-size: var(--text-xl); }
+      .albums-grid { grid-template-columns: 1fr; }
+      .images-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('open');"></div>
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="elgeel.png" alt="الشعار" class="sidebar-logo" onerror="this.style.display='none'">
+      <div class="sidebar-school-name">
+        مدارس الجيل الجديد
+        <small>الخاصة</small>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">الرئيسية</div>
+      <a class="nav-item" href="admin-dashboard.html">
+        <i class="fas fa-grid-2"></i> لوحة التحكم
+      </a>
+      
+      <div class="nav-section-title">الإدارة</div>
+      <a class="nav-item" href="admin-students.html">
+        <i class="fas fa-user-graduate"></i> الطلاب
+      </a>
+      <a class="nav-item" href="admin-stages.html">
+        <i class="fas fa-layer-group"></i> المراحل والفصول
+      </a>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-user-shield"></i> المشرفين
+      </a>
+      
+      <div class="nav-section-title">التواصل</div>
+      <a class="nav-item" href="admin-announcements.html">
+        <i class="fas fa-bullhorn"></i> الإعلانات
+      </a>
+      <a class="nav-item" href="admin-messages.html">
+        <i class="fas fa-message"></i> الرسائل
+      </a>
+      
+      <div class="nav-section-title">المحتوى</div>
+      <a class="nav-item" href="admin-events.html">
+        <i class="fas fa-calendar-star"></i> الأحداث
+      </a>
+      <a class="nav-item active" href="admin-gallery.html">
+        <i class="fas fa-images"></i> معرض الصور
+      </a>
+      <a class="nav-item" href="admin-schedules.html">
+        <i class="fas fa-calendar-week"></i> جداول الحصص
+      </a>
+      
+      <div class="nav-section-title">المالية</div>
+      <a class="nav-item" href="admin-expenses.html">
+        <i class="fas fa-receipt"></i> المصروفات
+      </a>
+      <a class="nav-item" href="admin-attendance.html">
+        <i class="fas fa-clipboard-check"></i> الحضور والغياب
+      </a>
+      
+      <div class="nav-section-title">النظام</div>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-gear"></i> الإعدادات
+      </a>
+      <a class="nav-item" href="admin-logs.html">
+        <i class="fas fa-clock-rotate-left"></i> سجل العمليات
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">م</div>
+        <div class="admin-details">
+          <div class="name" id="adminName">المشرف</div>
+          <div class="role" id="adminRole">مدير عام</div>
+        </div>
+      </div>
+      <button class="nav-item danger" onclick="window.location.href='admin-login.html'" style="width:100%;">
+        <i class="fas fa-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+  
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">معرض الصور</h1>
+      </div>
+      <div class="topbar-right">
+        <a href="admin-dashboard.html" class="topbar-btn" title="الرئيسية">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </header>
+    
+    <div style="padding:var(--space-2xl);flex:1;" id="contentArea">
+        <div class="page-header">
+          <h1>🖼️ معرض الصور</h1>
+          <button class="btn btn-primary" id="btnCreateAlbum">
+            <i class="fas fa-folder-plus"></i> ألبوم جديد
+          </button>
+        </div>
+        
+        <div id="albumsContainer"></div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { adminGallery, ALLOWED_IMAGE_TYPES, MAX_IMAGE_SIZE_MB } from './js/admin-gallery.js';
+    import { showToast, showConfirm, formatDateArabic, formatFileSize, escapeHtml } from './js/utils.js';
+    
+    // دوال تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    const escapeAttr = (str) => {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#039;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+    
+    const albumsContainer = document.getElementById('albumsContainer');
+    const btnCreateAlbum = document.getElementById('btnCreateAlbum');
+    
+    async function loadAlbums() {
+      try {
+        const albums = await adminGallery.getAlbums();
+        
+        if (albums.length === 0) {
+          albumsContainer.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="empty-state">
+                  <i class="fas fa-images"></i>
+                  <p>لا توجد ألبومات. ابدأ بإنشاء أول ألبوم.</p>
+                </div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        albumsContainer.innerHTML = albums.map(album => {
+          const createdAt = album.createdAt?.toDate ? album.createdAt.toDate() : new Date();
+          
+          // تعقيم جميع البيانات القادمة من قاعدة البيانات
+          const safeTitle = safeEscapeHtml(album.title || 'ألبوم');
+          const safeAttrTitle = escapeAttr(album.title || 'ألبوم');
+          const safeAttrId = escapeAttr(album.id || '');
+          const safeCoverImage = escapeAttr(album.cover_image || '');
+          const safeDescription = safeEscapeHtml(album.description || '');
+          const safeImageCount = album.image_count || 0;
+          const safeDate = safeEscapeHtml(formatDateArabic(createdAt));
+          
+          return `
+            <div class="card">
+              <div class="card-header">
+                <h3>📁 ${safeTitle}</h3>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-outline btn-sm btnViewAlbum" data-id="${safeAttrId}" data-title="${safeAttrTitle}">
+                    <i class="fas fa-eye"></i> عرض
+                  </button>
+                  <button class="btn btn-outline btn-sm btnUpload" data-id="${safeAttrId}" data-title="${safeAttrTitle}">
+                    <i class="fas fa-upload"></i> رفع
+                  </button>
+                  <button class="btn btn-danger btn-sm btnDeleteAlbum" data-id="${safeAttrId}" data-title="${safeAttrTitle}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="albums-grid">
+                  <div class="album-card" style="cursor:default;">
+                    ${safeCoverImage ? 
+                      `<img src="${safeCoverImage}" class="album-cover" alt="${safeAttrTitle}">` :
+                      `<div class="album-cover"><i class="fas fa-images"></i></div>`
+                    }
+                    <div class="album-info">
+                      <div class="album-title">${safeTitle}</div>
+                      <div class="album-meta">
+                        <span>${safeImageCount} صورة</span>
+                        <span>${safeDate}</span>
+                      </div>
+                      ${safeDescription ? `<p style="font-size:var(--text-xs);color:var(--body-light);margin-top:8px;">${safeDescription}</p>` : ''}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        attachEvents();
+        
+      } catch (error) {
+        albumsContainer.innerHTML = `<div class="card"><div class="card-body"><p style="color:var(--red);text-align:center;">فشل تحميل الألبومات</p></div></div>`;
+      }
+    }
+    
+    function attachEvents() {
+      document.querySelectorAll('.btnViewAlbum').forEach(btn => {
+        btn.addEventListener('click', () => viewAlbum(btn.dataset.id, btn.dataset.title));
+      });
+      
+      document.querySelectorAll('.btnUpload').forEach(btn => {
+        btn.addEventListener('click', () => showUploadModal(btn.dataset.id, btn.dataset.title));
+      });
+      
+      document.querySelectorAll('.btnDeleteAlbum').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const safeTitle = btn.dataset.title || 'هذا الألبوم';
+          const confirmed = await showConfirm(`حذف ألبوم "${safeTitle}" بجميع صوره؟`, 'تأكيد');
+          if (confirmed) {
+            await adminGallery.deleteAlbum(btn.dataset.id);
+            loadAlbums();
+          }
+        });
+      });
+    }
+    
+    function showCreateAlbumModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>إنشاء ألبوم جديد</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <form id="albumForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>اسم الألبوم</label>
+                <input type="text" class="form-input" id="albumTitle" required>
+              </div>
+              <div class="form-group">
+                <label>الوصف (اختياري)</label>
+                <textarea class="form-textarea" id="albumDescription" placeholder="وصف الألبوم..."></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline close-modal">إلغاء</button>
+              <button type="submit" class="btn btn-primary">إنشاء</button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.querySelector('.close-modal').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      overlay.querySelector('#albumForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = overlay.querySelector('#albumTitle').value.trim();
+        const description = overlay.querySelector('#albumDescription').value.trim();
+        
+        if (!title) return showToast('اسم الألبوم مطلوب', 'warning');
+        
+        try {
+          await adminGallery.createAlbum({ title, description });
+          closeModal();
+          loadAlbums();
+        } catch (error) {
+          showToast(error.message, 'error');
+        }
+      });
+    }
+    
+    async function viewAlbum(albumId, albumTitle) {
+      try {
+        const images = await adminGallery.getAlbumImages(albumId);
+        const album = await adminGallery.getAlbum(albumId);
+        
+        // تعقيم عنوان الألبوم
+        const safeAlbumTitle = safeEscapeHtml(albumTitle || 'ألبوم');
+        const safeAttrAlbumId = escapeAttr(albumId);
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.style.alignItems = 'flex-start';
+        overlay.style.paddingTop = '40px';
+        
+        overlay.innerHTML = `
+          <div class="modal" style="max-width:700px;">
+            <div class="modal-header">
+              <h3>${safeAlbumTitle} (${images.length} صورة)</h3>
+              <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+              ${images.length === 0 ? `
+                <div class="empty-state">
+                  <i class="fas fa-image"></i>
+                  <p>لا توجد صور في هذا الألبوم.</p>
+                </div>
+              ` : `
+                <div class="images-grid">
+                  ${images.map(img => {
+                    const safeImgUrl = escapeAttr(img.url || '');
+                    const safeImgId = escapeAttr(img.id || '');
+                    const isCover = album?.cover_image === img.url;
+                    
+                    return `
+                    <div class="image-card ${isCover ? 'cover' : ''}">
+                      <img src="${safeImgUrl}" alt="">
+                      ${isCover ? '<span class="cover-badge">غلاف</span>' : ''}
+                      <div class="image-actions">
+                        ${!isCover ? `
+                          <button class="btn btn-outline btn-sm btnSetCover" data-album="${safeAttrAlbumId}" data-url="${safeImgUrl}" style="color:white;border-color:white;">
+                            <i class="fas fa-star"></i>
+                          </button>
+                        ` : ''}
+                        <button class="btn btn-danger btn-sm btnDeleteImage" data-album="${safeAttrAlbumId}" data-image="${safeImgId}" style="color:white;">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  `}).join('')}
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        const closeModal = () => overlay.remove();
+        overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+        
+        overlay.querySelectorAll('.btnSetCover').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            await adminGallery.setCoverImage(btn.dataset.album, btn.dataset.url);
+            closeModal();
+            loadAlbums();
+          });
+        });
+        
+        overlay.querySelectorAll('.btnDeleteImage').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            await adminGallery.deleteImage(btn.dataset.album, btn.dataset.image);
+            closeModal();
+            loadAlbums();
+          });
+        });
+        
+      } catch (error) {
+        showToast('فشل تحميل الصور', 'error');
+      }
+    }
+    
+    function showUploadModal(albumId, albumTitle) {
+      const safeAlbumTitle = safeEscapeHtml(albumTitle || 'ألبوم');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>رفع صور - ${safeAlbumTitle}</h3>
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="modal-body">
+            <div class="upload-zone" id="uploadZone">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p style="font-weight:var(--weight-bold);margin-bottom:8px;">اسحب الصور هنا أو اضغط للاختيار</p>
+              <p style="font-size:var(--text-xs);color:var(--mute);">JPG, PNG, WebP - الحد الأقصى ${MAX_IMAGE_SIZE_MB}MB</p>
+              <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" style="display:none;">
+            </div>
+            <div class="progress-bar" id="progressBar" style="display:none;">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p style="text-align:center;font-size:var(--text-xs);color:var(--mute);margin-top:8px;" id="progressText"></p>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeModal = () => overlay.remove();
+      overlay.querySelector('.modal-close').addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+      
+      const uploadZone = overlay.querySelector('#uploadZone');
+      const fileInput = overlay.querySelector('#fileInput');
+      const progressBar = overlay.querySelector('#progressBar');
+      const progressFill = overlay.querySelector('#progressFill');
+      const progressText = overlay.querySelector('#progressText');
+      
+      uploadZone.addEventListener('click', () => fileInput.click());
+      
+      uploadZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+      });
+      
+      uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('dragover');
+      });
+      
+      uploadZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+      });
+      
+      fileInput.addEventListener('change', () => {
+        handleFiles(fileInput.files);
+      });
+      
+      async function handleFiles(files) {
+        if (!files || files.length === 0) return;
+        
+        progressBar.style.display = 'block';
+        
+        await adminGallery.uploadMultipleImages(albumId, files, (progress) => {
+          progressFill.style.width = progress + '%';
+          progressText.textContent = `جاري الرفع... ${progress}%`;
+        });
+        
+        progressBar.style.display = 'none';
+        progressFill.style.width = '0%';
+        progressText.textContent = '';
+        closeModal();
+        loadAlbums();
+      }
+    }
+    
+    btnCreateAlbum.addEventListener('click', showCreateAlbumModal);
+    
+    loadAlbums();
+  </script>
+</body>
+</html>
