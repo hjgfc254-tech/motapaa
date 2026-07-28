@@ -1,7 +1,7 @@
 /* ===========================
    SCHOOLHUB PRO - AUTH SYSTEM
    مدرسة الجيل الجديد الخاصة
-   الإصدار: 2.2.0 (تمت مراجعته وإصلاحه)
+   الإصدار: 2.2.1 (تم إصلاح الوصول العام لـ authManager)
    =========================== */
 
 /**
@@ -845,6 +845,9 @@ class AuthManager {
 // ===========================
 const authManager = new AuthManager();
 
+// [FIX] تصدير authManager للنطاق العام ليتمكن firebase-config.js من الوصول إليه
+window.authManager = authManager;
+
 // ===========================
 // دوال مساعدة مختصرة
 // ===========================
@@ -951,7 +954,7 @@ authManager.initialize().then(result => {
 // ===========================
 // رسالة جاهزية
 // ===========================
-console.log('📦 Auth System: جاهز | الإصدار 2.2.0 (تمت المراجعة)');
+console.log('📦 Auth System: جاهز | الإصدار 2.2.1 (تم تصدير authManager للنطاق العام)');
 console.log('ℹ️ استخدم loginStudent(code, password) لتسجيل دخول الطالب');
 console.log('ℹ️ استخدم loginAdmin(username, password) لتسجيل دخول المشرف');
 console.log('🔗 الاتصال بالـ Worker:', WORKER_URL);
