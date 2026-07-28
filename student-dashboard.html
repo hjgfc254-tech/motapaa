@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="لوحة متابعة الطالب - مدارس الجيل الجديد الخاصة">
+  <meta name="theme-color" content="#0A2647">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>لوحة المتابعة | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    /* ===========================
+       تنسيقات لوحة تحكم الطالب
+       =========================== */
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    
+    /* شريط علوي */
+    .top-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-light);
+      padding: var(--space-md) var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .top-bar-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .top-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .top-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: var(--white);
+      padding: 2px;
+      box-shadow: 0 2px 6px rgba(10, 38, 71, 0.08);
+    }
+    
+    .top-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--navy-deep);
+    }
+    
+    .top-school-name span {
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      display: block;
+    }
+    
+    .student-badge {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .student-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--gradient-blue);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      box-shadow: 0 4px 10px rgba(10, 38, 71, 0.2);
+    }
+    
+    .student-info-top {
+      text-align: right;
+    }
+    
+    .student-info-top .name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+    }
+    
+    .student-info-top .code {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      font-family: var(--font-numbers);
+    }
+    
+    .logout-btn {
+      background: var(--soft);
+      color: var(--body);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: var(--text-md);
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logout-btn:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    /* المحتوى الرئيسي */
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    /* رسالة الترحيب */
+    .welcome-section {
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .welcome-card {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-xl) var(--space-2xl);
+      box-shadow: var(--shadow-lg);
+      border-right: 5px solid var(--royal);
+    }
+    
+    .welcome-text h2 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-2xl);
+      color: var(--navy-deep);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .welcome-text p {
+      font-size: var(--text-sm);
+      color: var(--body);
+    }
+    
+    .welcome-details {
+      display: flex;
+      gap: var(--space-xl);
+      margin-top: var(--space-lg);
+      flex-wrap: wrap;
+    }
+    
+    .welcome-detail-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-size: var(--text-sm);
+      color: var(--body);
+      font-weight: var(--weight-medium);
+    }
+    
+    .welcome-detail-item i {
+      color: var(--royal);
+      width: 20px;
+      text-align: center;
+    }
+    
+    /* شريط الحالة */
+    .status-bar {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+    }
+    
+    .status-card {
+      flex: 1;
+      min-width: 140px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: var(--space-lg);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
+      cursor: default;
+    }
+    
+    .status-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .status-card i {
+      font-size: 24px;
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+    
+    .status-card .status-value {
+      font-family: var(--font-numbers);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-2xl);
+      color: var(--ink);
+    }
+    
+    .status-card .status-label {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      margin-top: var(--space-xs);
+    }
+    
+    .status-card.present i { color: var(--success); }
+    .status-card.absent i { color: var(--red); }
+    .status-card.messages i { color: var(--royal); }
+    .status-card.events i { color: var(--warning); }
+    
+    /* شبكة الأقسام */
+    .section-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .section-title i {
+      color: var(--royal);
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .menu-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl) var(--space-lg);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .menu-card:hover {
+      border-color: var(--royal);
+      background: var(--royal-light);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .menu-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      background: var(--royal-light);
+      color: var(--royal);
+      transition: all var(--transition-base);
+    }
+    
+    .menu-card:hover .menu-card-icon {
+      background: var(--royal);
+      color: var(--white);
+    }
+    
+    .menu-card.alert .menu-card-icon {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    .menu-card.alert:hover .menu-card-icon {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .menu-card-label {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+    }
+    
+    .menu-card-badge {
+      background: var(--red);
+      color: var(--white);
+      font-family: var(--font-numbers);
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      min-width: 22px;
+      text-align: center;
+    }
+    
+    /* حالة التحميل */
+    .loading-state {
+      text-align: center;
+      padding: var(--space-5xl);
+    }
+    
+    .loading-state .spinner {
+      margin: 0 auto var(--space-lg);
+      width: 40px;
+      height: 40px;
+      border-width: 4px;
+    }
+    
+    .loading-state p {
+      color: var(--body-light);
+      font-weight: var(--weight-medium);
+    }
+    
+    /* تحسينات الجوال */
+    @media (max-width: 600px) {
+      .top-bar {
+        padding: var(--space-sm) var(--space-md);
+      }
+      
+      .top-school-name {
+        font-size: var(--text-sm);
+      }
+      
+      .main-content {
+        padding: var(--space-md);
+      }
+      
+      .welcome-card {
+        padding: var(--space-lg);
+      }
+      
+      .welcome-text h2 {
+        font-size: var(--text-lg);
+      }
+      
+      .welcome-details {
+        gap: var(--space-md);
+      }
+      
+      .status-bar {
+        gap: var(--space-sm);
+      }
+      
+      .status-card {
+        min-width: 100px;
+        padding: var(--space-md);
+      }
+      
+      .status-card i {
+        font-size: 20px;
+      }
+      
+      .status-card .status-value {
+        font-size: var(--text-xl);
+      }
+      
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+      }
+      
+      .menu-card {
+        padding: var(--space-lg) var(--space-md);
+      }
+      
+      .menu-card-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- شريط علوي -->
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-brand">
+        <img src="elgeel.png" alt="الشعار" class="top-logo" onerror="this.style.display='none'">
+        <div class="top-school-name">
+          مدارس الجيل الجديد
+          <span>الخاصة</span>
+        </div>
+      </div>
+      
+      <div class="student-badge">
+        <div class="student-info-top" id="studentInfoTop">
+          <div class="name">—</div>
+          <div class="code">—</div>
+        </div>
+        <div class="student-avatar" id="studentAvatar">—</div>
+        <button class="logout-btn" id="logoutButton" title="تسجيل الخروج">
+          <i class="fas fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- المحتوى الرئيسي -->
+  <main class="main-content" id="mainContent">
+    <!-- حالة التحميل -->
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>جاري تحميل بياناتك...</p>
+    </div>
+    
+    <!-- المحتوى الفعلي -->
+    <div id="dashboardContent" style="display: none;">
+      <!-- رسالة الترحيب -->
+      <section class="welcome-section">
+        <div class="welcome-card">
+          <div class="welcome-text">
+            <h2 id="welcomeName">مرحباً، —</h2>
+            <p>نتمنى لك يوماً دراسياً موفقاً</p>
+          </div>
+          <div class="welcome-details" id="welcomeDetails">
+            <!-- تُملأ ديناميكياً -->
+          </div>
+        </div>
+      </section>
+      
+      <!-- شريط الحالة -->
+      <section class="status-bar" id="statusBar">
+        <!-- تُملأ ديناميكياً -->
+      </section>
+      
+      <!-- أقسام المتابعة -->
+      <section>
+        <h3 class="section-title">
+          <i class="fas fa-compass"></i>
+          أقسام المتابعة
+        </h3>
+        <div class="menu-grid" id="menuGrid">
+          <!-- تُملأ ديناميكياً -->
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <!-- السكربتات -->
+  <script type="module">
+    import { authManager } from './js/auth-system.js';
+    import { fetchDocument, fetchDocuments } from './js/firebase-config.js';
+    import { getCachedData, cacheManager, CACHE_CONFIG } from './js/cache-manager.js';
+    import { formatDateArabic, getInitials, showToast, escapeHtml } from './js/utils.js';
+    
+    // دوال تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    // ===========================
+    // عناصر DOM
+    // ===========================
+    const loadingState = document.getElementById('loadingState');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const welcomeName = document.getElementById('welcomeName');
+    const welcomeDetails = document.getElementById('welcomeDetails');
+    const statusBar = document.getElementById('statusBar');
+    const menuGrid = document.getElementById('menuGrid');
+    const studentInfoTop = document.getElementById('studentInfoTop');
+    const studentAvatar = document.getElementById('studentAvatar');
+    const logoutButton = document.getElementById('logoutButton');
+    
+    let _cachedAcademicYear = null;
+    
+    // ===========================
+    // جلب السنة الدراسية ديناميكياً
+    // ===========================
+    async function getAcademicYear() {
+      if (_cachedAcademicYear) return _cachedAcademicYear;
+      
+      try {
+        const settings = await fetchDocument('settings', 'general');
+        if (settings && settings.current_academic_year) {
+          _cachedAcademicYear = settings.current_academic_year.replace(/-/g, '_');
+          return _cachedAcademicYear;
+        }
+      } catch (error) {
+        console.warn('⚠️ فشل جلب السنة الدراسية:', error.message);
+      }
+      
+      _cachedAcademicYear = '2025_2026';
+      return _cachedAcademicYear;
+    }
+    
+    // ===========================
+    // التهيئة
+    // ===========================
+    async function initDashboard() {
+      try {
+        // استعادة الجلسة
+        const session = await authManager.initialize();
+        
+        if (!session.isAuthenticated || session.type !== 'student') {
+          window.location.href = 'index.html';
+          return;
+        }
+        
+        const student = session.user;
+        
+        // تحديث الشريط العلوي
+        updateTopBar(student);
+        
+        // تحميل بيانات الطالب
+        await loadStudentData(student);
+        
+        // تحميل الإحصائيات
+        await loadStatistics(student);
+        
+        // تحميل قائمة الأقسام
+        loadMenuItems(student);
+        
+        // إظهار المحتوى
+        loadingState.style.display = 'none';
+        dashboardContent.style.display = 'block';
+        
+        console.log('✅ تم تحميل لوحة تحكم الطالب');
+      } catch (error) {
+        console.error('❌ فشل تحميل لوحة التحكم:', error);
+        showToast('حدث خطأ في تحميل البيانات. يرجى تحديث الصفحة.', 'error', 5000);
+      }
+    }
+    
+    // ===========================
+    // تحديث الشريط العلوي
+    // ===========================
+    function updateTopBar(student) {
+      const name = student.name || 'طالب';
+      const code = student.code || '—';
+      const initials = getInitials(name);
+      
+      studentInfoTop.querySelector('.name').textContent = name;
+      studentInfoTop.querySelector('.code').textContent = `كود: ${code}`;
+      studentAvatar.textContent = initials;
+    }
+    
+    // ===========================
+    // تحميل بيانات الطالب
+    // ===========================
+    async function loadStudentData(student) {
+      // textContent آمن — لا يحتاج تعقيم
+      welcomeName.textContent = `مرحباً، ${student.name || 'طالب'}`;
+      
+      // تعقيم جميع القيم قبل إدراجها في innerHTML
+      const safeCode = safeEscapeHtml(student.code || '—');
+      const safeStageName = safeEscapeHtml(student.stage_name || '—');
+      const safeClassName = safeEscapeHtml(student.class_name || '—');
+      const isActive = student.status === 'active';
+      
+      const detailsHTML = `
+        <div class="welcome-detail-item">
+          <i class="fas fa-id-card"></i>
+          <span>الكود: <strong>${safeCode}</strong></span>
+        </div>
+        <div class="welcome-detail-item">
+          <i class="fas fa-layer-group"></i>
+          <span>المرحلة: <strong>${safeStageName}</strong></span>
+        </div>
+        <div class="welcome-detail-item">
+          <i class="fas fa-door-open"></i>
+          <span>الفصل: <strong>${safeClassName}</strong></span>
+        </div>
+        <div class="welcome-detail-item">
+          <i class="fas fa-circle-check"></i>
+          <span>الحالة: <strong style="color: ${isActive ? 'var(--success)' : 'var(--red)'}">${isActive ? 'مفعل' : 'غير مفعل'}</strong></span>
+        </div>
+      `;
+      
+      welcomeDetails.innerHTML = detailsHTML;
+    }
+    
+    // ===========================
+    // تحميل الإحصائيات
+    // ===========================
+    async function loadStatistics(student) {
+      try {
+        // محاولة جلب بيانات الحضور
+        let presentDays = '—';
+        let absentDays = '—';
+        let unreadMessages = '—';
+        let upcomingEvents = '—';
+        
+        try {
+          const academicYear = await getAcademicYear();
+          const attendanceData = await getCachedData(
+            CACHE_CONFIG.keys.student_attendance,
+            () => fetchDocument('attendance', `${student.id}_${academicYear}`),
+            'student_attendance'
+          );
+          
+          if (attendanceData) {
+            presentDays = attendanceData.present || 0;
+            absentDays = attendanceData.absent || 0;
+          }
+        } catch (e) {
+          console.log('ℹ️ لا توجد بيانات حضور بعد');
+        }
+        
+        // محاولة جلب عدد الرسائل غير المقروءة
+        try {
+          const messagesResult = await fetchDocuments('messages', {
+            filters: [
+              ['to', '==', student.id],
+              ['read', '==', false]
+            ],
+            limitCount: 1
+          });
+          unreadMessages = messagesResult.documents ? '...' : '0';
+        } catch (e) {
+          unreadMessages = '0';
+        }
+        
+        // محاولة جلب الأحداث القادمة
+        try {
+          const eventsResult = await fetchDocuments('events', {
+            filters: [['event_date', '>=', new Date().toISOString()]],
+            orderByField: 'event_date',
+            orderDirection: 'asc',
+            limitCount: 1
+          });
+          upcomingEvents = eventsResult.documents ? '...' : '0';
+        } catch (e) {
+          upcomingEvents = '0';
+        }
+        
+        // تعقيم القيم (أرقام أو نصوص)
+        const safePresent = safeEscapeHtml(String(presentDays));
+        const safeAbsent = safeEscapeHtml(String(absentDays));
+        const safeUnread = safeEscapeHtml(String(unreadMessages));
+        const safeUpcoming = safeEscapeHtml(String(upcomingEvents));
+        
+        statusBar.innerHTML = `
+          <div class="status-card present">
+            <i class="fas fa-user-check"></i>
+            <div class="status-value">${safePresent}</div>
+            <div class="status-label">أيام الحضور</div>
+          </div>
+          <div class="status-card absent">
+            <i class="fas fa-user-xmark"></i>
+            <div class="status-value">${safeAbsent}</div>
+            <div class="status-label">أيام الغياب</div>
+          </div>
+          <div class="status-card messages">
+            <i class="fas fa-envelope"></i>
+            <div class="status-value">${safeUnread}</div>
+            <div class="status-label">رسائل جديدة</div>
+          </div>
+          <div class="status-card events">
+            <i class="fas fa-calendar-star"></i>
+            <div class="status-value">${safeUpcoming}</div>
+            <div class="status-label">أحداث قادمة</div>
+          </div>
+        `;
+      } catch (error) {
+        console.warn('⚠️ فشل تحميل الإحصائيات:', error.message);
+      }
+    }
+    
+    // ===========================
+    // تحميل قائمة الأقسام
+    // ===========================
+    function loadMenuItems(student) {
+      const menuItems = [
+        { id: 'schedule', icon: 'fa-calendar-week', label: 'جدول الحصص', alert: false, badge: null, url: '#schedule' },
+        { id: 'attendance', icon: 'fa-clipboard-check', label: 'الحضور والغياب', alert: false, badge: null, url: '#attendance' },
+        { id: 'announcements', icon: 'fa-bullhorn', label: 'الإعلانات', alert: false, badge: null, url: '#announcements' },
+        { id: 'messages', icon: 'fa-message', label: 'الرسائل', alert: true, badge: null, url: '#messages' },
+        { id: 'events', icon: 'fa-calendar-days', label: 'الأحداث', alert: false, badge: null, url: '#events' },
+        { id: 'gallery', icon: 'fa-images', label: 'معرض الصور', alert: false, badge: null, url: '#gallery' },
+        { id: 'expenses', icon: 'fa-receipt', label: 'المصروفات', alert: false, badge: null, url: '#expenses' },
+        { id: 'profile', icon: 'fa-user-pen', label: 'بياناتي', alert: false, badge: null, url: '#profile' }
+      ];
+      
+      menuGrid.innerHTML = menuItems.map(item => `
+        <a href="${item.url}" class="menu-card ${item.alert ? 'alert' : ''}">
+          <div class="menu-card-icon">
+            <i class="fas ${item.icon}"></i>
+          </div>
+          <span class="menu-card-label">${item.label}</span>
+          ${item.badge ? `<span class="menu-card-badge">${item.badge}</span>` : ''}
+        </a>
+      `).join('');
+    }
+    
+    // ===========================
+    // تسجيل الخروج
+    // ===========================
+    logoutButton.addEventListener('click', async () => {
+      await authManager.logout();
+      window.location.href = 'index.html';
+    });
+    
+    // ===========================
+    // تحديث نشاط الجلسة
+    // ===========================
+    document.addEventListener('click', () => {
+      authManager.updateSessionActivity();
+    });
+    
+    // ===========================
+    // بدء التهيئة
+    // ===========================
+    initDashboard();
+  </script>
+</body>
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="لوحة تحكم الإدارة - مدارس الجيل الجديد الخاصة">
+  <meta name="theme-color" content="#0A2647">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة التحكم | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+    }
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      display: flex;
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-deep);
+      color: var(--white);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+    
+    .sidebar-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .sidebar-school-name small {
+      display: block;
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      opacity: 0.6;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.35);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-numbers);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-lg);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: right;
+      font-family: var(--font-body);
+    }
+    
+    .nav-item i {
+      width: 22px;
+      text-align: center;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(30, 95, 187, 0.4);
+    }
+    
+    .nav-item.danger:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    
+    .admin-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .admin-details .name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-details .role {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .main-wrapper {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      min-height: 100vh;
+    }
+    
+    .topbar {
+      background: var(--white);
+      height: var(--topbar-height);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-2xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: var(--space-sm);
+    }
+    
+    .page-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    
+    .topbar-btn:hover {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .topbar-btn .badge-dot {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      background: var(--red);
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    
+    .content-area {
+      padding: var(--space-2xl);
+      max-width: 1200px;
+    }
+    
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .stat-box {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
+      cursor: pointer;
+      border: 1px solid var(--border-light);
+    }
+    
+    .stat-box:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--royal);
+    }
+    
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    
+    .stat-icon.blue { background: var(--royal-light); color: var(--royal); }
+    .stat-icon.red { background: var(--red-light); color: var(--red); }
+    .stat-icon.green { background: var(--success-bg); color: var(--success); }
+    .stat-icon.warning { background: var(--warning-bg); color: var(--warning); }
+    
+    .stat-info { flex: 1; }
+    
+    .stat-value {
+      font-family: var(--font-numbers);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-3xl);
+      color: var(--ink);
+      line-height: 1;
+    }
+    
+    .stat-label {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      margin-top: var(--space-xs);
+    }
+    
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .quick-action-card {
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .quick-action-card:hover {
+      border-color: var(--royal);
+      background: var(--royal-light);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .quick-action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .quick-action-card:hover .quick-action-icon {
+      background: var(--royal);
+      color: white;
+    }
+    
+    .quick-action-label {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+    }
+    
+    .advanced-controls {
+      display: flex;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-2xl);
+    }
+    
+    .control-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--body);
+      font-family: var(--font-body);
+    }
+    
+    .control-btn:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+      background: var(--royal-light);
+    }
+    
+    .control-btn.danger {
+      border-color: var(--red-light);
+      color: var(--red);
+    }
+    
+    .control-btn.danger:hover {
+      background: var(--red-light);
+      border-color: var(--red);
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(100%);
+      }
+      
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .main-wrapper {
+        margin-right: 0;
+      }
+      
+      .content-area {
+        padding: var(--space-lg);
+      }
+      
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+      }
+      
+      .stat-box {
+        padding: var(--space-md);
+        gap: var(--space-md);
+      }
+      
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-radius: 12px;
+      }
+      
+      .stat-value {
+        font-size: var(--text-xl);
+      }
+      
+      .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+      }
+      
+      .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        display: none;
+      }
+      
+      .sidebar-overlay.open {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .quick-actions-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="elgeel.png" alt="الشعار" class="sidebar-logo" onerror="this.style.display='none'">
+      <div class="sidebar-school-name">
+        مدارس الجيل الجديد
+        <small>الخاصة</small>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">الرئيسية</div>
+      <a class="nav-item active" data-page="dashboard">
+        <i class="fas fa-grid-2"></i> لوحة التحكم
+      </a>
+      
+      <div class="nav-section-title">الإدارة</div>
+      <a class="nav-item" data-page="students">
+        <i class="fas fa-user-graduate"></i> الطلاب
+      </a>
+      <a class="nav-item" data-page="stages">
+        <i class="fas fa-layer-group"></i> المراحل والفصول
+      </a>
+      <a class="nav-item" data-page="admins">
+        <i class="fas fa-user-shield"></i> المشرفين
+      </a>
+      
+      <div class="nav-section-title">التواصل</div>
+      <a class="nav-item" data-page="announcements">
+        <i class="fas fa-bullhorn"></i> الإعلانات
+      </a>
+      <a class="nav-item" data-page="messages">
+        <i class="fas fa-message"></i> الرسائل
+      </a>
+      
+      <div class="nav-section-title">المحتوى</div>
+      <a class="nav-item" data-page="events">
+        <i class="fas fa-calendar-star"></i> الأحداث
+      </a>
+      <a class="nav-item" data-page="gallery">
+        <i class="fas fa-images"></i> معرض الصور
+      </a>
+      <a class="nav-item" data-page="schedules">
+        <i class="fas fa-calendar-week"></i> جداول الحصص
+      </a>
+      
+      <div class="nav-section-title">المالية</div>
+      <a class="nav-item" data-page="expenses">
+        <i class="fas fa-receipt"></i> المصروفات
+      </a>
+      <a class="nav-item" data-page="attendance">
+        <i class="fas fa-clipboard-check"></i> الحضور والغياب
+      </a>
+      
+      <div class="nav-section-title">النظام</div>
+      <a class="nav-item" data-page="settings">
+        <i class="fas fa-gear"></i> الإعدادات
+      </a>
+      <a class="nav-item" data-page="logs">
+        <i class="fas fa-clock-rotate-left"></i> سجل العمليات
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">م</div>
+        <div class="admin-details">
+          <div class="name" id="adminName">—</div>
+          <div class="role" id="adminRole">—</div>
+        </div>
+      </div>
+      <button class="nav-item danger" id="sidebarLogout" style="width:100%;">
+        <i class="fas fa-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+  
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">لوحة التحكم</h1>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn" id="btnNotifications" title="الإشعارات">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="topbar-btn" id="btnMaintenance" title="وضع الصيانة">
+          <i class="fas fa-wrench"></i>
+        </button>
+      </div>
+    </header>
+    
+    <div class="content-area" id="contentArea">
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-icon blue"><i class="fas fa-user-graduate"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" id="statStudents">—</div>
+            <div class="stat-label">إجمالي الطلاب</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon green"><i class="fas fa-user-check"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" id="statActive">—</div>
+            <div class="stat-label">طلاب مفعلين</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon red"><i class="fas fa-user-xmark"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" id="statInactive">—</div>
+            <div class="stat-label">طلاب معطلين</div>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-icon warning"><i class="fas fa-layer-group"></i></div>
+          <div class="stat-info">
+            <div class="stat-value" id="statStages">—</div>
+            <div class="stat-label">المراحل الدراسية</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="advanced-controls">
+        <button class="control-btn" id="btnPromoteAll">
+          <i class="fas fa-arrow-up"></i> ترقية جماعية
+        </button>
+        <button class="control-btn danger" id="btnMaintenanceToggle">
+          <i class="fas fa-power-off"></i> وضع الصيانة
+        </button>
+        <button class="control-btn" id="btnExport">
+          <i class="fas fa-file-export"></i> تصدير البيانات
+        </button>
+        <button class="control-btn" id="btnGuide">
+          <i class="fas fa-book"></i> كتالوج النظام
+        </button>
+      </div>
+      
+      <h3 style="font-family:var(--font-heading);font-weight:var(--weight-extrabold);color:var(--navy-deep);margin-bottom:var(--space-lg);">
+        <i class="fas fa-bolt" style="color:var(--royal);margin-left:8px;"></i>
+        إجراءات سريعة
+      </h3>
+      <div class="quick-actions-grid">
+        <div class="quick-action-card" data-action="add-student">
+          <div class="quick-action-icon"><i class="fas fa-user-plus"></i></div>
+          <span class="quick-action-label">إضافة طالب</span>
+        </div>
+        <div class="quick-action-card" data-action="add-stage">
+          <div class="quick-action-icon"><i class="fas fa-folder-plus"></i></div>
+          <span class="quick-action-label">إضافة مرحلة</span>
+        </div>
+        <div class="quick-action-card" data-action="add-announcement">
+          <div class="quick-action-icon"><i class="fas fa-bullhorn"></i></div>
+          <span class="quick-action-label">إعلان جديد</span>
+        </div>
+        <div class="quick-action-card" data-action="send-message">
+          <div class="quick-action-icon"><i class="fas fa-paper-plane"></i></div>
+          <span class="quick-action-label">إرسال رسالة</span>
+        </div>
+        <div class="quick-action-card" data-action="add-event">
+          <div class="quick-action-icon"><i class="fas fa-calendar-plus"></i></div>
+          <span class="quick-action-label">إضافة حدث</span>
+        </div>
+        <div class="quick-action-card" data-action="import-students">
+          <div class="quick-action-icon"><i class="fas fa-file-import"></i></div>
+          <span class="quick-action-label">استيراد طلاب</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module" src="./js/admin-init.js"></script>
+</body>
+</html>

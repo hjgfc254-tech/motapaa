@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>سجل العمليات | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    :root {
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+    }
+    
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+      display: flex;
+      font-family: var(--font-body);
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--navy-deep);
+      color: var(--white);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition-smooth);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+    .sidebar-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+    
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      object-fit: contain;
+      background: white;
+      padding: 3px;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+    
+    .sidebar-school-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--white);
+      line-height: 1.3;
+    }
+    
+    .sidebar-school-name small {
+      display: block;
+      font-weight: var(--weight-regular);
+      font-size: var(--text-xs);
+      opacity: 0.6;
+    }
+    
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+    
+    .nav-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.35);
+      padding: var(--space-md) var(--space-md) var(--space-sm);
+      font-weight: var(--weight-bold);
+      font-family: var(--font-numbers);
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-lg);
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      transition: all var(--transition-fast);
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: right;
+      font-family: var(--font-body);
+    }
+    
+    .nav-item i {
+      width: 22px;
+      text-align: center;
+      font-size: var(--text-base);
+      flex-shrink: 0;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+    
+    .nav-item.active {
+      background: var(--royal);
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(30, 95, 187, 0.4);
+    }
+    
+    .nav-item.danger:hover {
+      background: var(--red);
+      color: var(--white);
+    }
+    
+    .sidebar-footer {
+      padding: var(--space-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--royal);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+      font-family: var(--font-heading);
+      font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    
+    .admin-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .admin-details .name {
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .admin-details .role {
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    
+    .main-wrapper {
+      flex: 1;
+      margin-right: var(--sidebar-width);
+      min-height: 100vh;
+    }
+    
+    .topbar {
+      background: var(--white);
+      height: var(--topbar-height);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-2xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 22px;
+      color: var(--ink);
+      cursor: pointer;
+      padding: var(--space-sm);
+    }
+    
+    .page-title {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .topbar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    
+    .topbar-btn:hover {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+      display: none;
+    }
+    
+    .sidebar-overlay.open {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .main-wrapper {
+        margin-right: 0;
+      }
+    }
+
+    .page-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-2xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-2xl);
+      color: var(--navy-deep);
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      border: none;
+      font-family: var(--font-body);
+    }
+    
+    .btn-outline {
+      background: var(--white);
+      border: 2px solid var(--border);
+      color: var(--body);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin-bottom: var(--space-lg);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    
+    .card-body {
+      padding: 0;
+    }
+    
+    .log-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-lg);
+      padding: var(--space-lg) var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      transition: background var(--transition-fast);
+    }
+    
+    .log-item:last-child {
+      border-bottom: none;
+    }
+    
+    .log-item:hover {
+      background: var(--soft);
+    }
+    
+    .log-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    
+    .log-icon.promote { background: var(--royal-light); color: var(--royal); }
+    .log-icon.maintenance { background: var(--warning-bg); color: var(--warning); }
+    .log-icon.delete { background: var(--red-light); color: var(--red); }
+    .log-icon.create { background: var(--success-bg); color: var(--success); }
+    .log-icon.settings { background: var(--soft); color: var(--body); }
+    .log-icon.default { background: var(--info-bg); color: var(--info); }
+    
+    .log-content {
+      flex: 1;
+    }
+    
+    .log-action {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    
+    .log-details {
+      font-size: var(--text-sm);
+      color: var(--body);
+      line-height: var(--leading-relaxed);
+    }
+    
+    .log-meta {
+      display: flex;
+      gap: var(--space-lg);
+      margin-top: var(--space-sm);
+      font-size: var(--text-xs);
+      color: var(--mute);
+    }
+    
+    .log-meta span {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-full);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-xs);
+      border: 2px solid var(--border);
+      background: var(--white);
+      color: var(--body);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .filter-tab:hover {
+      border-color: var(--royal);
+      color: var(--royal);
+    }
+    
+    .filter-tab.active {
+      background: var(--royal);
+      color: var(--white);
+      border-color: var(--royal);
+    }
+    
+    .readonly-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-md);
+      background: var(--info-bg);
+      color: var(--info);
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      white-space: nowrap;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl);
+      color: var(--mute);
+    }
+    
+    .empty-state i {
+      font-size: 40px;
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    
+    @media (max-width: 600px) {
+      .page-container { padding: var(--space-md); }
+      .page-header h1 { font-size: var(--text-xl); }
+      .log-item { flex-direction: column; gap: var(--space-md); }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('open');"></div>
+  
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <img src="elgeel.png" alt="الشعار" class="sidebar-logo" onerror="this.style.display='none'">
+      <div class="sidebar-school-name">
+        مدارس الجيل الجديد
+        <small>الخاصة</small>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">الرئيسية</div>
+      <a class="nav-item" href="admin-dashboard.html">
+        <i class="fas fa-grid-2"></i> لوحة التحكم
+      </a>
+      
+      <div class="nav-section-title">الإدارة</div>
+      <a class="nav-item" href="admin-students.html">
+        <i class="fas fa-user-graduate"></i> الطلاب
+      </a>
+      <a class="nav-item" href="admin-stages.html">
+        <i class="fas fa-layer-group"></i> المراحل والفصول
+      </a>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-user-shield"></i> المشرفين
+      </a>
+      
+      <div class="nav-section-title">التواصل</div>
+      <a class="nav-item" href="admin-announcements.html">
+        <i class="fas fa-bullhorn"></i> الإعلانات
+      </a>
+      <a class="nav-item" href="admin-messages.html">
+        <i class="fas fa-message"></i> الرسائل
+      </a>
+      
+      <div class="nav-section-title">المحتوى</div>
+      <a class="nav-item" href="admin-events.html">
+        <i class="fas fa-calendar-star"></i> الأحداث
+      </a>
+      <a class="nav-item" href="admin-gallery.html">
+        <i class="fas fa-images"></i> معرض الصور
+      </a>
+      <a class="nav-item" href="admin-schedules.html">
+        <i class="fas fa-calendar-week"></i> جداول الحصص
+      </a>
+      
+      <div class="nav-section-title">المالية</div>
+      <a class="nav-item" href="admin-expenses.html">
+        <i class="fas fa-receipt"></i> المصروفات
+      </a>
+      <a class="nav-item" href="admin-attendance.html">
+        <i class="fas fa-clipboard-check"></i> الحضور والغياب
+      </a>
+      
+      <div class="nav-section-title">النظام</div>
+      <a class="nav-item" href="admin-settings.html">
+        <i class="fas fa-gear"></i> الإعدادات
+      </a>
+      <a class="nav-item active" href="admin-logs.html">
+        <i class="fas fa-clock-rotate-left"></i> سجل العمليات
+      </a>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">م</div>
+        <div class="admin-details">
+          <div class="name" id="adminName">المشرف</div>
+          <div class="role" id="adminRole">مدير عام</div>
+        </div>
+      </div>
+      <button class="nav-item danger" onclick="window.location.href='admin-login.html'" style="width:100%;">
+        <i class="fas fa-right-from-bracket"></i> تسجيل الخروج
+      </button>
+    </div>
+  </aside>
+  
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title" id="pageTitle">سجل العمليات</h1>
+      </div>
+      <div class="topbar-right">
+        <a href="admin-dashboard.html" class="topbar-btn" title="الرئيسية">
+          <i class="fas fa-home"></i>
+        </a>
+      </div>
+    </header>
+    
+    <div style="padding:var(--space-2xl);flex:1;" id="contentArea">
+        <div class="page-header">
+          <div style="display:flex;align-items:center;gap:var(--space-md);">
+            <h1>📋 سجل العمليات</h1>
+            <span class="readonly-badge">
+              <i class="fas fa-lock"></i> للقراءة فقط
+            </span>
+          </div>
+        </div>
+        
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">الكل</button>
+          <button class="filter-tab" data-filter="mass_promote">ترقية جماعية</button>
+          <button class="filter-tab" data-filter="maintenance_on">تفعيل الصيانة</button>
+          <button class="filter-tab" data-filter="maintenance_off">إيقاف الصيانة</button>
+          <button class="filter-tab" data-filter="student_added">إضافة طالب</button>
+          <button class="filter-tab" data-filter="student_deleted">حذف طالب</button>
+          <button class="filter-tab" data-filter="bulk_import">استيراد</button>
+          <button class="filter-tab" data-filter="settings_updated">إعدادات</button>
+        </div>
+        
+        <div id="logsContainer"></div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { adminLogs } from './js/admin-logs.js';
+    import { showToast, formatDateTimeArabic, escapeHtml } from './js/utils.js';
+    
+    // دوال تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    const logsContainer = document.getElementById('logsContainer');
+    const filterTabs = document.getElementById('filterTabs');
+    
+    async function init() {
+      filterTabs.addEventListener('click', (e) => {
+        const tab = e.target.closest('.filter-tab');
+        if (!tab) return;
+        filterTabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        adminLogs.setFilter(tab.dataset.filter);
+        loadLogs();
+      });
+      
+      loadLogs();
+    }
+    
+    async function loadLogs() {
+      try {
+        const result = await adminLogs.getLogs();
+        const logs = result.logs || [];
+        
+        if (logs.length === 0) {
+          logsContainer.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="empty-state">
+                  <i class="fas fa-clock-rotate-left"></i>
+                  <p>لا توجد سجلات حتى الآن.</p>
+                </div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        logsContainer.innerHTML = logs.map(log => {
+          const formatted = adminLogs.formatLogEntry(log);
+          const iconClass = getIconClass(log.action);
+          
+          // تعقيم جميع البيانات القادمة من Firestore
+          const safeActionLabel = safeEscapeHtml(formatted.actionLabel || '—');
+          const safeDetails = safeEscapeHtml(log.details || '—');
+          const safePerformedBy = safeEscapeHtml(log.performed_by || 'النظام');
+          const safeTimestamp = safeEscapeHtml(formatted.timestampFormatted || '—');
+          const safeAffectedCount = log.affected_count ? safeEscapeHtml(String(log.affected_count)) : '';
+          
+          return `
+            <div class="card">
+              <div class="card-body">
+                <div class="log-item">
+                  <div class="log-icon ${iconClass}">
+                    <i class="fas ${formatted.actionIcon}"></i>
+                  </div>
+                  <div class="log-content">
+                    <div class="log-action">${safeActionLabel}</div>
+                    <div class="log-details">${safeDetails}</div>
+                    <div class="log-meta">
+                      <span><i class="fas fa-user"></i> ${safePerformedBy}</span>
+                      <span><i class="fas fa-clock"></i> ${safeTimestamp}</span>
+                      ${safeAffectedCount ? `<span><i class="fas fa-hashtag"></i> ${safeAffectedCount} متأثر</span>` : ''}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+      } catch (error) {
+        logsContainer.innerHTML = `<div class="card"><div class="card-body"><p style="color:var(--red);text-align:center;">فشل تحميل السجلات</p></div></div>`;
+      }
+    }
+    
+    function getIconClass(action) {
+      if (action.includes('promote')) return 'promote';
+      if (action.includes('maintenance')) return 'maintenance';
+      if (action.includes('delete') || action.includes('cleared')) return 'delete';
+      if (action.includes('add') || action.includes('import') || action.includes('created')) return 'create';
+      if (action.includes('settings') || action.includes('updated') || action.includes('reset')) return 'settings';
+      return 'default';
+    }
+    
+    init();
+  </script>
+</body>
+</html>

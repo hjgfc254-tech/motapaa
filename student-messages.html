@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="الرسائل - مدارس الجيل الجديد الخاصة">
+  <meta name="theme-color" content="#0A2647">
+  <title>الرسائل | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    body {
+      background: var(--page-bg);
+      min-height: 100vh;
+    }
+    
+    .top-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-light);
+      padding: var(--space-md) var(--space-xl);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .top-bar-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--royal);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+      transition: color var(--transition-fast);
+    }
+    
+    .back-btn:hover {
+      color: var(--navy);
+    }
+    
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .page-header i {
+      color: var(--royal);
+      font-size: var(--text-xl);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .main-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-xl);
+    }
+    
+    /* زر رسالة جديدة */
+    .new-message-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-md) var(--space-xl);
+      background: var(--royal);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      margin-bottom: var(--space-xl);
+      box-shadow: var(--shadow-btn-blue);
+      transition: all var(--transition-base);
+    }
+    
+    .new-message-btn:hover {
+      background: var(--royal-hover);
+      box-shadow: var(--shadow-btn-blue-hover);
+      transform: translateY(-2px);
+    }
+    
+    /* بطاقة رسالة */
+    .message-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      transition: all var(--transition-base);
+      cursor: pointer;
+      border-right: 4px solid var(--border);
+    }
+    
+    .message-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    
+    .message-card.unread {
+      border-right-color: var(--royal);
+      background: var(--royal-light);
+    }
+    
+    .message-card.replied {
+      border-right-color: var(--success);
+    }
+    
+    .message-card.sent {
+      border-right-color: var(--warning);
+    }
+    
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-md);
+      gap: var(--space-md);
+    }
+    
+    .message-subject {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-md);
+      color: var(--ink);
+      line-height: var(--leading-tight);
+      flex: 1;
+    }
+    
+    .message-status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    
+    .status-unread {
+      background: var(--royal-light);
+      color: var(--royal);
+    }
+    
+    .status-read {
+      background: var(--soft);
+      color: var(--body-light);
+    }
+    
+    .status-replied {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+    
+    .status-sent {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+    
+    .message-body {
+      font-size: var(--text-sm);
+      color: var(--body);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-md);
+    }
+    
+    .message-reply {
+      background: var(--soft);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      font-size: var(--text-sm);
+      color: var(--body);
+      border-right: 3px solid var(--success);
+    }
+    
+    .message-reply-label {
+      font-size: 11px;
+      font-weight: var(--weight-bold);
+      color: var(--success);
+      margin-bottom: var(--space-xs);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .message-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    
+    .message-date {
+      font-size: var(--text-xs);
+      color: var(--mute);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+    
+    .message-from {
+      font-size: var(--text-xs);
+      color: var(--body-light);
+      font-weight: var(--weight-medium);
+    }
+    
+    /* نافذة رسالة جديدة */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 38, 71, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      animation: fadeIn 0.2s ease;
+    }
+    
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-3xl);
+      animation: slideUp 0.3s ease;
+    }
+    
+    .modal-header {
+      padding: var(--space-xl);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-extrabold);
+      font-size: var(--text-lg);
+      color: var(--navy-deep);
+    }
+    
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: none;
+      color: var(--body);
+      cursor: pointer;
+      font-size: var(--text-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+    
+    .modal-close:hover {
+      background: var(--red-light);
+      color: var(--red);
+    }
+    
+    .modal-body {
+      padding: var(--space-xl);
+    }
+    
+    .modal-footer {
+      padding: var(--space-lg) var(--space-xl);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      gap: var(--space-md);
+      justify-content: flex-end;
+    }
+    
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+    
+    .form-group label {
+      display: block;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-sm);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--soft);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      color: var(--ink);
+      transition: all var(--transition-base);
+      resize: vertical;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--border-focus);
+      background: var(--white);
+      box-shadow: var(--shadow-input-focus);
+      outline: none;
+    }
+    
+    .form-group textarea {
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      padding: var(--space-md) var(--space-2xl);
+      background: var(--accent-red);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: var(--font-numbers);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      box-shadow: var(--shadow-btn-red);
+      transition: all var(--transition-base);
+    }
+    
+    .submit-btn:hover {
+      background: var(--accent-red-hover);
+      box-shadow: var(--shadow-btn-red-hover);
+    }
+    
+    .cancel-btn {
+      padding: var(--space-md) var(--space-xl);
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-sm);
+      color: var(--body);
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+    
+    .cancel-btn:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+    
+    .loading-state {
+      text-align: center;
+      padding: var(--space-5xl);
+    }
+    
+    .loading-state .spinner {
+      margin: 0 auto var(--space-lg);
+      width: 40px;
+      height: 40px;
+      border-width: 4px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--space-5xl);
+    }
+    
+    .empty-state i {
+      font-size: 56px;
+      color: var(--mute-light);
+      margin-bottom: var(--space-lg);
+      display: block;
+    }
+    
+    .empty-state h3 {
+      font-family: var(--font-heading);
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .empty-state p {
+      color: var(--body-light);
+      font-size: var(--text-sm);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 600px) {
+      .top-bar {
+        padding: var(--space-sm) var(--space-md);
+      }
+      
+      .main-content {
+        padding: var(--space-md);
+      }
+      
+      .message-card {
+        padding: var(--space-lg);
+      }
+      
+      .message-subject {
+        font-size: var(--text-sm);
+      }
+      
+      .message-header {
+        flex-direction: column;
+      }
+      
+      .modal {
+        max-width: 100%;
+        margin: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="student-dashboard.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i>
+        العودة للوحة المتابعة
+      </a>
+      <div class="page-header">
+        <h1>الرسائل</h1>
+        <i class="fas fa-message"></i>
+      </div>
+    </div>
+  </header>
+  
+  <main class="main-content">
+    <button class="new-message-btn" id="newMessageBtn">
+      <i class="fas fa-pen"></i>
+      إرسال استفسار جديد
+    </button>
+    
+    <div id="loadingState" class="loading-state">
+      <div class="spinner"></div>
+      <p>جاري تحميل الرسائل...</p>
+    </div>
+    
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <i class="fas fa-message"></i>
+      <h3>لا توجد رسائل</h3>
+      <p>لا توجد رسائل حالياً. يمكنك إرسال استفسار إلى الإدارة.</p>
+    </div>
+    
+    <div id="messagesList" style="display:none;">
+      <!-- تُملأ ديناميكياً -->
+    </div>
+  </main>
+  
+  <script type="module">
+    import { authManager } from './js/auth-system.js';
+    import { fetchDocuments, saveDocument, updateDocument } from './js/firebase-config.js';
+    import { getCachedData, setCachedData, CACHE_CONFIG } from './js/cache-manager.js';
+    import { formatDateArabic, timeAgoArabic, showToast, escapeHtml } from './js/utils.js';
+    
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    const messagesList = document.getElementById('messagesList');
+    const newMessageBtn = document.getElementById('newMessageBtn');
+    
+    let currentStudent = null;
+    
+    // ===========================
+    // التهيئة
+    // ===========================
+    async function initPage() {
+      try {
+        const session = await authManager.initialize();
+        
+        if (!session.isAuthenticated || session.type !== 'student') {
+          window.location.href = 'index.html';
+          return;
+        }
+        
+        currentStudent = session.user;
+        await loadMessages();
+        
+      } catch (error) {
+        console.error('❌ فشل تحميل الصفحة:', error);
+        showEmptyState('حدث خطأ في تحميل الرسائل. يرجى المحاولة لاحقاً.');
+      }
+    }
+    
+    // ===========================
+    // تحميل الرسائل
+    // ===========================
+    async function loadMessages() {
+      try {
+        loadingState.style.display = 'block';
+        messagesList.style.display = 'none';
+        emptyState.style.display = 'none';
+        
+        const result = await fetchDocuments('messages', {
+          filters: [
+            ['to', '==', currentStudent.id]
+          ],
+          orderByField: 'createdAt',
+          orderDirection: 'desc',
+          limitCount: 30
+        });
+        
+        // أيضاً نجلب الرسائل المرسلة من الطالب
+        const sentResult = await fetchDocuments('messages', {
+          filters: [
+            ['from', '==', currentStudent.id]
+          ],
+          orderByField: 'createdAt',
+          orderDirection: 'desc',
+          limitCount: 20
+        });
+        
+        const allMessages = [
+          ...(result.documents || []),
+          ...(sentResult.documents || [])
+        ];
+        
+        // ترتيب حسب التاريخ
+        allMessages.sort((a, b) => {
+          const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+          const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+          return dateB - dateA;
+        });
+        
+        if (allMessages.length === 0) {
+          showEmptyState();
+          return;
+        }
+        
+        renderMessages(allMessages);
+        
+        loadingState.style.display = 'none';
+        messagesList.style.display = 'block';
+        
+      } catch (error) {
+        console.error('❌ فشل تحميل الرسائل:', error);
+        showEmptyState('فشل تحميل الرسائل. تأكد من اتصالك بالإنترنت.');
+      }
+    }
+    
+    // ===========================
+    // عرض الرسائل (مع حماية XSS)
+    // ===========================
+    function renderMessages(messages) {
+      messagesList.innerHTML = messages.map(message => {
+        const isFromSchool = message.type === 'school_to_student';
+        const isReplied = !!message.reply;
+        const isUnread = !message.read && isFromSchool;
+        
+        let cardClass = '';
+        if (isFromSchool && isUnread) cardClass = 'unread';
+        else if (isReplied) cardClass = 'replied';
+        else if (!isFromSchool) cardClass = 'sent';
+        
+        let statusHTML = '';
+        if (isFromSchool && isUnread) {
+          statusHTML = '<span class="message-status status-unread"><i class="fas fa-circle"></i> جديدة</span>';
+        } else if (isReplied) {
+          statusHTML = '<span class="message-status status-replied"><i class="fas fa-check-circle"></i> تم الرد</span>';
+        } else if (!isFromSchool) {
+          statusHTML = '<span class="message-status status-sent"><i class="fas fa-paper-plane"></i> مرسلة</span>';
+        } else {
+          statusHTML = '<span class="message-status status-read"><i class="fas fa-check"></i> مقروءة</span>';
+        }
+        
+        const createdAt = message.createdAt?.toDate ? message.createdAt.toDate() : new Date(message.createdAt);
+        
+        // تطهير النصوص من XSS
+        const safeSubject = escapeHtml(message.subject || 'رسالة');
+        const safeBody = escapeHtml(message.body || '');
+        const safeReply = escapeHtml(message.reply || '');
+        
+        return `
+          <div class="message-card ${cardClass}" data-id="${message.id}">
+            <div class="message-header">
+              <h3 class="message-subject">${safeSubject}</h3>
+              ${statusHTML}
+            </div>
+            <div class="message-body">${safeBody}</div>
+            
+            ${message.reply ? `
+              <div class="message-reply">
+                <div class="message-reply-label">
+                  <i class="fas fa-reply"></i> رد الإدارة
+                </div>
+                ${safeReply}
+              </div>
+            ` : ''}
+            
+            <div class="message-footer">
+              <div class="message-date">
+                <i class="fas fa-clock"></i>
+                <span>${timeAgoArabic(createdAt)}</span>
+                <span>·</span>
+                <span>${formatDateArabic(createdAt)}</span>
+              </div>
+              <div class="message-from">
+                ${isFromSchool ? '<i class="fas fa-school"></i> من: الإدارة' : '<i class="fas fa-user"></i> إلى: الإدارة'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // ===========================
+    // نافذة رسالة جديدة
+    // ===========================
+    newMessageBtn.addEventListener('click', () => {
+      showNewMessageModal();
+    });
+    
+    function showNewMessageModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.id = 'messageModal';
+      
+      overlay.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3>إرسال استفسار</h3>
+            <button class="modal-close" id="closeModal">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <form id="messageForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>الموضوع</label>
+                <input type="text" id="msgSubject" placeholder="اكتب موضوع الرسالة" required maxlength="100">
+              </div>
+              <div class="form-group">
+                <label>نص الرسالة</label>
+                <textarea id="msgBody" placeholder="اكتب استفسارك هنا..." required maxlength="500"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="cancel-btn" id="cancelMsg">إلغاء</button>
+              <button type="submit" class="submit-btn" id="sendMsgBtn">
+                <i class="fas fa-paper-plane"></i> إرسال
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      const closeBtn = overlay.querySelector('#closeModal');
+      const cancelBtn = overlay.querySelector('#cancelMsg');
+      const form = overlay.querySelector('#messageForm');
+      
+      const closeModal = () => overlay.remove();
+      
+      closeBtn.addEventListener('click', closeModal);
+      cancelBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+      
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const subject = overlay.querySelector('#msgSubject').value.trim();
+        const body = overlay.querySelector('#msgBody').value.trim();
+        const sendBtn = overlay.querySelector('#sendMsgBtn');
+        
+        if (!subject || !body) {
+          showToast('يرجى ملء جميع الحقول', 'warning');
+          return;
+        }
+        
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<span class="spinner spinner-sm"></span> جاري الإرسال...';
+        
+        try {
+          await saveDocument('messages', null, {
+            type: 'student_to_school',
+            from: currentStudent.id,
+            from_name: currentStudent.name,
+            from_code: currentStudent.code,
+            to: 'admin',
+            subject: subject,
+            body: body,
+            read: false,
+            reply: null
+          });
+          
+          showToast('تم إرسال الاستفسار بنجاح ✅', 'success');
+          closeModal();
+          await loadMessages();
+          
+        } catch (error) {
+          console.error('❌ فشل إرسال الرسالة:', error);
+          showToast('فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.', 'error');
+          sendBtn.disabled = false;
+          sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال';
+        }
+      });
+    }
+    
+    // ===========================
+    // عرض حالة فارغة
+    // ===========================
+    function showEmptyState(message = null) {
+      loadingState.style.display = 'none';
+      messagesList.style.display = 'none';
+      emptyState.style.display = 'block';
+      
+      if (message) {
+        emptyState.querySelector('p').textContent = message;
+      }
+    }
+    
+    // ===========================
+    // بدء التهيئة
+    // ===========================
+    initPage();
+  </script>
+</body>
+</html>

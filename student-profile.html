@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="description" content="بياناتي - مدارس الجيل الجديد الخاصة">
+  <meta name="theme-color" content="#0A2647">
+  <title>بياناتي | مدارس الجيل الجديد الخاصة</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Rubik:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  
+  <style>
+    body { background: var(--page-bg); min-height: 100vh; }
+    
+    .top-bar { background: var(--white); border-bottom: 1px solid var(--border-light); padding: var(--space-md) var(--space-xl); position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow-sm); }
+    .top-bar-inner { max-width: 700px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .back-btn { display: flex; align-items: center; gap: var(--space-sm); color: var(--royal); text-decoration: none; font-weight: var(--weight-semibold); font-size: var(--text-sm); transition: color var(--transition-fast); }
+    .back-btn:hover { color: var(--navy); }
+    .page-header { display: flex; align-items: center; gap: var(--space-md); }
+    .page-header i { color: var(--royal); font-size: var(--text-xl); }
+    .page-header h1 { font-family: var(--font-heading); font-weight: var(--weight-extrabold); font-size: var(--text-lg); color: var(--navy-deep); }
+    
+    .main-content { max-width: 700px; margin: 0 auto; padding: var(--space-xl); }
+    
+    .profile-header-card { background: var(--white); border-radius: var(--radius-2xl); padding: var(--space-2xl); text-align: center; margin-bottom: var(--space-xl); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); position: relative; overflow: hidden; }
+    .profile-header-card::before { content: ''; position: absolute; top: 0; right: 0; left: 0; height: 5px; background: var(--gradient-accent-bar); }
+    
+    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--gradient-blue); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: var(--weight-bold); font-size: var(--text-2xl); margin: 0 auto var(--space-lg); box-shadow: 0 8px 20px rgba(10, 38, 71, 0.25); }
+    .profile-name { font-family: var(--font-heading); font-weight: var(--weight-extrabold); font-size: var(--text-xl); color: var(--navy-deep); margin-bottom: var(--space-xs); }
+    .profile-code { font-family: var(--font-numbers); font-size: var(--text-sm); color: var(--body-light); margin-bottom: var(--space-md); }
+    
+    .profile-status { display: inline-flex; align-items: center; gap: var(--space-xs); padding: var(--space-xs) var(--space-lg); border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: var(--weight-bold); }
+    .status-active { background: var(--success-bg); color: var(--success); }
+    .status-inactive { background: var(--red-light); color: var(--red); }
+    
+    .info-card { background: var(--white); border-radius: var(--radius-xl); overflow: hidden; margin-bottom: var(--space-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-light); }
+    .info-card-header { padding: var(--space-lg) var(--space-xl); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: var(--space-md); }
+    .info-card-header i { color: var(--royal); font-size: var(--text-lg); }
+    .info-card-header h3 { font-family: var(--font-heading); font-weight: var(--weight-bold); font-size: var(--text-md); color: var(--ink); }
+    
+    .info-list { padding: var(--space-md) var(--space-xl); }
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-md) 0; border-bottom: 1px solid var(--border-light); }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: var(--text-sm); color: var(--body-light); display: flex; align-items: center; gap: var(--space-sm); }
+    .info-label i { color: var(--royal); width: 18px; text-align: center; }
+    .info-value { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--ink); text-align: left; }
+    
+    .loading-state { text-align: center; padding: var(--space-5xl); }
+    .loading-state .spinner { margin: 0 auto var(--space-lg); width: 40px; height: 40px; border-width: 4px; }
+    
+    @media (max-width: 600px) {
+      .top-bar { padding: var(--space-sm) var(--space-md); }
+      .main-content { padding: var(--space-md); }
+      .profile-header-card { padding: var(--space-xl) var(--space-lg); }
+      .profile-avatar { width: 64px; height: 64px; font-size: var(--text-xl); }
+      .info-row { flex-direction: column; gap: var(--space-xs); align-items: flex-start; }
+      .info-value { text-align: right; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="student-dashboard.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة للوحة المتابعة
+      </a>
+      <div class="page-header">
+        <h1>بياناتي</h1>
+        <i class="fas fa-user-pen"></i>
+      </div>
+    </div>
+  </header>
+  
+  <main class="main-content">
+    <div id="loadingState" class="loading-state">
+      <div class="spinner"></div>
+      <p>جاري تحميل البيانات...</p>
+    </div>
+    
+    <div id="profileContent" style="display:none;">
+      <div class="profile-header-card">
+        <div class="profile-avatar" id="profileAvatar">—</div>
+        <h2 class="profile-name" id="profileName">—</h2>
+        <div class="profile-code" id="profileCode">—</div>
+        <span class="profile-status" id="profileStatus">—</span>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-card-header">
+          <i class="fas fa-address-card"></i>
+          <h3>المعلومات الأساسية</h3>
+        </div>
+        <div class="info-list" id="basicInfo"></div>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-card-header">
+          <i class="fas fa-graduation-cap"></i>
+          <h3>المعلومات الدراسية</h3>
+        </div>
+        <div class="info-list" id="academicInfo"></div>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-card-header">
+          <i class="fas fa-phone"></i>
+          <h3>معلومات ولي الأمر</h3>
+        </div>
+        <div class="info-list" id="parentInfo"></div>
+      </div>
+      
+      <div class="info-card">
+        <div class="info-card-header">
+          <i class="fas fa-clock-rotate-left"></i>
+          <h3>معلومات الحساب</h3>
+        </div>
+        <div class="info-list" id="accountInfo"></div>
+      </div>
+    </div>
+  </main>
+  
+  <script type="module">
+    import { authManager } from './js/auth-system.js';
+    import { getInitials, formatDateArabic, formatDateTimeArabic, timeAgoArabic, escapeHtml } from './js/utils.js';
+    
+    // دالة تعقيم احتياطية
+    const safeEscapeHtml = (str) => {
+      if (typeof escapeHtml === 'function') return escapeHtml(str);
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    };
+    
+    const loadingState = document.getElementById('loadingState');
+    const profileContent = document.getElementById('profileContent');
+    
+    async function initPage() {
+      try {
+        const session = await authManager.initialize();
+        
+        if (!session.isAuthenticated || session.type !== 'student') {
+          window.location.href = 'index.html';
+          return;
+        }
+        
+        const student = session.user;
+        displayProfile(student);
+        
+        loadingState.style.display = 'none';
+        profileContent.style.display = 'block';
+        
+      } catch (error) {
+        console.error('❌ فشل تحميل الصفحة:', error);
+      }
+    }
+    
+    function displayProfile(student) {
+      // تعقيم جميع بيانات الطالب قبل العرض
+      const safeName = safeEscapeHtml(student.name || '—');
+      const safeCode = safeEscapeHtml(student.code || '—');
+      const safeSeatNumber = safeEscapeHtml(student.seat_number || 'غير محدد');
+      const safeStageName = safeEscapeHtml(student.stage_name || '—');
+      const safeClassName = safeEscapeHtml(student.class_name || '—');
+      const safeParentName = safeEscapeHtml(student.parent_name || 'غير محدد');
+      const safeParentPhone = safeEscapeHtml(student.parent_phone || 'غير محدد');
+      
+      const initials = getInitials(student.name || 'طالب');
+      document.getElementById('profileAvatar').textContent = initials;
+      document.getElementById('profileName').textContent = student.name || '—';
+      document.getElementById('profileCode').textContent = `كود الطالب: ${student.code || '—'}`;
+      
+      const statusEl = document.getElementById('profileStatus');
+      if (student.status === 'active') {
+        statusEl.className = 'profile-status status-active';
+        statusEl.innerHTML = '<i class="fas fa-circle-check"></i> حساب مفعل';
+      } else {
+        statusEl.className = 'profile-status status-inactive';
+        statusEl.innerHTML = '<i class="fas fa-circle-xmark"></i> حساب غير مفعل';
+      }
+      
+      document.getElementById('basicInfo').innerHTML = `
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-user"></i> الاسم الكامل</span>
+          <span class="info-value">${safeName}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-id-card"></i> الكود</span>
+          <span class="info-value" style="font-family:var(--font-numbers);">${safeCode}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-venus-mars"></i> رقم الجلوس</span>
+          <span class="info-value">${safeSeatNumber}</span>
+        </div>
+      `;
+      
+      document.getElementById('academicInfo').innerHTML = `
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-layer-group"></i> المرحلة</span>
+          <span class="info-value">${safeStageName}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-door-open"></i> الفصل</span>
+          <span class="info-value">${safeClassName}</span>
+        </div>
+      `;
+      
+      document.getElementById('parentInfo').innerHTML = `
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-user-tie"></i> ولي الأمر</span>
+          <span class="info-value">${safeParentName}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-phone"></i> رقم الهاتف</span>
+          <span class="info-value" style="font-family:var(--font-numbers);direction:ltr;">${safeParentPhone}</span>
+        </div>
+      `;
+      
+      const lastLogin = student.last_login?.toDate ? student.last_login.toDate() : null;
+      const createdAt = student.createdAt?.toDate ? student.createdAt.toDate() : null;
+      
+      document.getElementById('accountInfo').innerHTML = `
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-calendar-check"></i> تاريخ التسجيل</span>
+          <span class="info-value">${createdAt ? safeEscapeHtml(formatDateArabic(createdAt)) : '—'}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label"><i class="fas fa-clock"></i> آخر تسجيل دخول</span>
+          <span class="info-value">${lastLogin ? safeEscapeHtml(timeAgoArabic(lastLogin)) : '—'}</span>
+        </div>
+      `;
+    }
+    
+    initPage();
+  </script>
+</body>
+</html>
