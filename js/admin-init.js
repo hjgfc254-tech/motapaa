@@ -1,7 +1,7 @@
 /* ===========================
    SCHOOLHUB PRO - ADMIN INIT
    مدارس الجيل الجديد الخاصة
-   الإصدار: 2.1
+   الإصدار: 2.2 (متوافق مع auto-seeder v3.2)
    =========================== */
 
 /**
@@ -9,6 +9,7 @@
  * يربط واجهة admin-dashboard.html بجميع وحدات الإدارة
  * 
  * تم إصلاحه: #13 - منع تسريب الذاكرة من تكرار تحميل السكريبتات
+ * تم إصلاحه: #14 - تحديث استيراد startSetupWizard
  */
 
 import { authManager } from './auth-system.js';
@@ -23,7 +24,8 @@ import { adminExpenses } from './admin-expenses.js';
 import { adminGallery } from './admin-gallery.js';
 import { adminSettings } from './admin-settings.js';
 import { adminLogs } from './admin-logs.js';
-import { initializeSystem, checkSystemStatus } from './auto-seeder.js';
+// [FIX] استخدام الأسماء الصحيحة من auto-seeder v3.2
+import { startSetupWizard, checkSystemStatus } from './auto-seeder.js';
 import { fetchDocument } from './firebase-config.js';
 import { 
   showToast, showConfirm, showAlert, showSuccess, showError,
@@ -63,7 +65,8 @@ async function initAdminDashboard() {
     
     currentAdmin = session.user;
     updateAdminUI(currentAdmin);
-    await initializeSystem(false);
+    // [FIX] استخدام startSetupWizard للتحقق من التهيئة
+    await startSetupWizard(false);
     await loadDashboardStats();
     setupNavigation();
     setupButtons();
@@ -502,6 +505,7 @@ window.AdminDashboard = {
 
 document.addEventListener('DOMContentLoaded', initAdminDashboard);
 
-console.log('📦 Admin Init: جاهز | الإصدار 2.1');
+console.log('📦 Admin Init: جاهز | الإصدار 2.2');
 console.log('🔧 منع تسريب الذاكرة: تتبع السكريبتات المحملة');
+console.log('🔄 [FIX] مُحدَّث لاستخدام startSetupWizard');
 console.log('ℹ️ جميع وحدات الإدارة متاحة عبر window.AdminDashboard');
